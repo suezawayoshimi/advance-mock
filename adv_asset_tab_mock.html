@@ -597,6 +597,182 @@
     .news-item-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
     .news-item-tag { display: inline-block; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; font-size: 9px; font-weight: 700; padding: 2px 6px; color: var(--secondary); margin-bottom: 5px; }
     .news-item-title { font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.5; margin-bottom: 5px; }
+
+    /* ===== シミュレーションタブ ===== */
+    .simulation-hero {
+      background: white;
+      padding: 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .simulation-label {
+      font-size: 12px;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+    .simulation-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--blue);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.5px;
+      margin-bottom: 2px;
+    }
+    .simulation-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .simulation-section {
+      background: white;
+      margin: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px;
+    }
+    .simulation-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .simulation-control {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .simulation-control:last-child {
+      margin-bottom: 0;
+    }
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .control-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+    .control-input {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      background: var(--bg);
+    }
+    .slider {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--blue);
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--blue);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .simulation-chart {
+      width: 100%;
+      height: 180px;
+      background: #FAFAF9;
+      border-radius: 8px;
+      margin: 12px 0;
+    }
+    .goal-progress {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #E0DDD9;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 4px;
+    }
+    .progress-detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--secondary);
+    }
+    .progress-achieved {
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .progress-remaining {
+      color: var(--loss);
+      font-weight: 600;
+    }
+    .coming-soon {
+      background: white;
+      margin: 0 16px 12px;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      padding: 28px 16px;
+      text-align: center;
+    }
+    .coming-soon-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .coming-soon-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+    .coming-soon-desc {
+      font-size: 11px;
+      color: var(--secondary);
+      line-height: 1.65;
+    }
     .news-item-meta { font-size: 10px; color: var(--muted); }
 
     /* ===== 配当タブ ===== */
@@ -604,6 +780,44 @@
     .coming-soon-icon { font-size: 52px; margin-bottom: 16px; }
     .coming-soon-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
     .coming-soon-desc { font-size: 13px; color: var(--secondary); line-height: 1.75; }
+
+    /* ===== Save button & notification ===== */
+    .save-settings-btn {
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: calc(100% - 32px);
+      margin: 16px 16px 0;
+    }
+    .save-settings-btn:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+    .save-notification {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2E7D32;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .save-notification.show {
+      opacity: 1;
+    }
 
     /* ===== Bottom tab bar ===== */
     .tab-bar {
@@ -664,13 +878,13 @@
     ============================================================ -->
     <div class="tab-panel active" id="panel-suihi">
 
-      <!-- Toggle: 資産 | 損益（ADV） | 負債 -->
+      <!-- Toggle: 資産 | 損益（ADV） | シミュレーション -->
       <div class="toggle-group">
         <div class="toggle-btn active" onclick="switchView('suihi','asset',this)">資産</div>
         <div class="toggle-btn" onclick="switchView('suihi','pl',this)" style="position:relative;">
           損益<span class="adv-badge">ADV</span>
         </div>
-        <div class="toggle-btn" onclick="switchView('suihi','debt',this)">負債</div>
+        <div class="toggle-btn" onclick="switchView('suihi','simulation',this)">シミュレーション</div>
       </div>
 
       <!-- ── 資産ビュー ── -->
@@ -697,13 +911,19 @@
         </div>
 
         <!-- グラフ種別・期間セレクタ -->
-        <div class="graph-controls">
-          <div class="graph-type-btn">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 10 L4 6 L7 8 L10 4 L13 2" stroke="#5D5956" stroke-width="1.5" fill="none"/><path d="M1 10 L4 6 L7 8 L10 4 L13 2 L13 12 L1 12Z" fill="#FCAD4C" opacity="0.3"/></svg>
-            積上面グラフ <span>▼</span>
+        <div class="graph-controls" style="display:flex;flex-direction:column;gap:10px;padding:10px 16px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="graph-type-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 10 L4 6 L7 8 L10 4 L13 2" stroke="#5D5956" stroke-width="1.5" fill="none"/><path d="M1 10 L4 6 L7 8 L10 4 L13 2 L13 12 L1 12Z" fill="#FCAD4C" opacity="0.3"/></svg>
+              積上面グラフ <span>▼</span>
+            </div>
           </div>
-          <div class="graph-period-btn">
-            6ヶ月 <span>▼</span>
+          <!-- 期間選択ボタン（資産ビューのみ表示） -->
+          <div id="asset-periods" style="display:flex;gap:6px;overflow-x:auto;padding:0 0 4px;">
+            <div class="period-btn active" onclick="setPeriod(this)">1ヶ月</div>
+            <div class="period-btn" onclick="setPeriod(this)">3ヶ月</div>
+            <div class="period-btn" onclick="setPeriod(this)">6ヶ月</div>
+            <div class="period-btn" onclick="setPeriod(this)">1年</div>
           </div>
         </div>
 
@@ -712,8 +932,8 @@
           <div style="position:relative; padding: 4px 0 0 52px;">
             <!-- Y labels -->
             <div style="position:absolute;left:0;top:6px;bottom:20px;display:flex;flex-direction:column;justify-content:space-between;width:52px;text-align:right;padding-right:6px;">
-              <span style="font-size:9px;color:var(--muted);">2850万円</span>
-              <span style="font-size:9px;color:var(--muted);">1425万円</span>
+              <span style="font-size:9px;color:var(--muted);">5000万円</span>
+              <span style="font-size:9px;color:var(--muted);">2500万円</span>
               <span style="font-size:9px;color:var(--muted);">0円</span>
             </div>
 
@@ -722,6 +942,11 @@
               <!-- Grid lines -->
               <line x1="0" y1="10" x2="310" y2="10" stroke="#F0EDE9" stroke-width="0.5"/>
               <line x1="0" y1="65" x2="310" y2="65" stroke="#F0EDE9" stroke-width="0.5"/>
+
+              <!-- Target line: 5000万円 -->
+              <line x1="0" y1="8" x2="310" y2="8" stroke="#ED7100" stroke-width="2" stroke-dasharray="4,3"/>
+              <!-- Target label -->
+              <text x="268" y="5" font-size="9" font-weight="600" fill="#ED7100">目標</text>
 
               <!-- 投資信託（yellow/orange） bottom layer -->
               <polygon
@@ -747,11 +972,6 @@
               <polyline
                 points="0,26 52,24 103,22 155,20 207,18 258,17 310,16"
                 fill="none" stroke="#316FEE" stroke-width="1.5" stroke-linejoin="round"/>
-
-              <!-- Spike (like in screenshot) at ~52 -->
-              <polyline
-                points="52,24 55,4 58,24"
-                fill="none" stroke="#316FEE" stroke-width="1.5"/>
             </svg>
           </div>
 
@@ -762,6 +982,12 @@
             <span style="font-size:9px;color:var(--muted);">1月</span>
             <span style="font-size:9px;color:var(--muted);">3月</span>
             <span style="font-size:9px;color:var(--muted);">4月</span>
+          </div>
+
+          <!-- Target line legend -->
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:10px;color:var(--secondary);">
+            <div style="width:16px;height:2px;background:#ED7100;border-radius:1px;"></div>
+            <span>目標金額: <strong style="color:#ED7100;">¥5,000万</strong></span>
           </div>
         </div>
 
@@ -1005,55 +1231,150 @@
         <div style="height:12px;"></div>
       </div>
 
-      <!-- ── 負債ビュー ── -->
-      <div id="suihi-debt" style="display:none;">
-        <div class="asset-header">
-          <div class="asset-header-top">
-            <div class="asset-label">合計</div>
-            <div class="asset-amount-block">
-              <div class="asset-total">¥1,240,000</div>
-              <div class="asset-compare-row">
-                <span class="asset-compare-label">6ヶ月前比：</span>
-                <span class="asset-compare-val profit">¥-88,000</span>
-                <span class="arrow-icon arrow-up">↑</span>
+
+      <!-- ── シミュレーションビュー ── -->
+      <div id="suihi-simulation" style="display:none;">
+        <!-- シミュレーション評価額（ヒーロー） -->
+        <div class="simulation-hero">
+          <div class="simulation-label">シミュレーション評価額</div>
+          <div class="simulation-value">¥35,240,000</div>
+          <div class="simulation-sub">5年後の予想評価額（年利5.0%想定）</div>
+        </div>
+
+        <!-- 設定を保存ボタン -->
+        <button class="save-settings-btn" onclick="saveInvestmentSettings()">この目標とリスク許容度を保存</button>
+
+        <!-- 積上面グラフ: 資産構成 -->
+        <div class="simulation-section">
+          <div class="simulation-section-title">資産構成予想</div>
+          <div class="simulation-chart">
+            <svg width="100%" height="100%" viewBox="0 0 310 180" preserveAspectRatio="none">
+              <!-- Grid lines -->
+              <line x1="0" y1="18" x2="310" y2="18" stroke="#F0EDE9" stroke-width="0.5"/>
+              <line x1="0" y1="90" x2="310" y2="90" stroke="#F0EDE9" stroke-width="0.5"/>
+
+              <!-- 投資信託（yellow） bottom layer -->
+              <polygon
+                points="0,130 77,125 155,120 232,115 310,112 310,160 232,165 155,170 77,175 0,180"
+                fill="#FCAD4C" opacity="0.7"/>
+
+              <!-- 株式（red） second layer -->
+              <polygon
+                points="0,80 77,76 155,72 232,68 310,64 310,112 232,115 155,120 77,125 0,130"
+                fill="#DF3727" opacity="0.65"/>
+
+              <!-- 年金（teal） third layer -->
+              <polygon
+                points="0,35 77,32 155,29 232,26 310,24 310,64 232,68 155,72 77,76 0,80"
+                fill="#008986" opacity="0.55"/>
+
+              <!-- 現金（blue） top layer -->
+              <polygon
+                points="0,20 77,18 155,16 232,15 310,14 310,24 232,26 155,29 77,32 0,35"
+                fill="#2881D7" opacity="0.5"/>
+
+              <!-- Total line -->
+              <polyline
+                points="0,20 77,18 155,16 232,15 310,14"
+                fill="none" stroke="#316FEE" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <!-- Legend -->
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:10px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#2881D7;"></div>
+              <span style="color:var(--secondary);">現金・預金</span>
+              <span style="color:var(--dark);font-weight:600;margin-left:auto;">¥3,240,000</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#008986;"></div>
+              <span style="color:var(--secondary);">年金</span>
+              <span style="color:var(--dark);font-weight:600;margin-left:auto;">¥5,140,000</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#DF3727;"></div>
+              <span style="color:var(--secondary);">株式</span>
+              <span style="color:var(--dark);font-weight:600;margin-left:auto;">¥12,320,000</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#FCAD4C;"></div>
+              <span style="color:var(--secondary);">投資信託</span>
+              <span style="color:var(--dark);font-weight:600;margin-left:auto;">¥14,540,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 目標額 -->
+        <div class="simulation-section">
+          <div class="simulation-section-title">目標額を設定</div>
+          <div class="simulation-control">
+            <div class="control-label">
+              <span>目標額</span>
+              <span class="control-value" id="target-display">5000万円</span>
+            </div>
+            <input type="range" class="slider" min="2000" max="10000" value="5000" step="100" oninput="updateTarget(this.value)">
+            <div class="slider-labels">
+              <span>2000万円</span>
+              <span>10000万円</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 毎月つみたて目標額 -->
+        <div class="simulation-section">
+          <div class="simulation-section-title">毎月つみたて目標額</div>
+          <div class="simulation-control">
+            <div class="control-label">
+              <span>毎月の積立額</span>
+              <span class="control-value" id="monthly-display">¥40,000</span>
+            </div>
+            <input type="range" class="slider" min="10000" max="100000" value="40000" step="5000" oninput="updateMonthly(this.value)">
+            <div class="slider-labels">
+              <span>10,000円</span>
+              <span>100,000円</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 期待リターン -->
+        <div class="simulation-section">
+          <div class="simulation-section-title">期待リターン</div>
+          <div class="simulation-control">
+            <div class="control-label">
+              <span>年間リターン</span>
+              <span class="control-value" id="return-display">5.0%</span>
+            </div>
+            <input type="range" class="slider" min="3" max="7" value="5" step="0.5" oninput="updateReturn(this.value)">
+            <div class="slider-labels">
+              <span>3.0%</span>
+              <span>7.0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 目標達成予測 -->
+        <div class="simulation-section">
+          <div class="simulation-section-title">目標達成予測</div>
+          <div class="goal-progress">
+            <div class="progress-label">
+              <span>進捗状況</span>
+              <span id="progress-percent">70%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill" style="width:70%;"></div>
+            </div>
+            <div class="progress-detail">
+              <div>
+                達成額：<span class="progress-achieved" id="achieved-amount">¥3,500万</span>
               </div>
-              <div class="asset-compare-row">
-                <span class="asset-compare-label">前日比：</span>
-                <span class="asset-compare-val" style="color:var(--dark);">¥0</span>
+              <div>
+                あと：<span class="progress-remaining" id="remaining-amount">¥1,500万</span>
               </div>
             </div>
           </div>
         </div>
-        <div class="graph-controls">
-          <div class="graph-type-btn">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 10 L4 6 L7 8 L10 4 L13 2" stroke="#5D5956" stroke-width="1.5" fill="none"/></svg>
-            折れ線グラフ <span>▼</span>
-          </div>
-          <div class="graph-period-btn">6ヶ月 <span>▼</span></div>
-        </div>
-        <div class="chart-wrap" style="background:white;padding:8px 16px 12px 52px;">
-          <svg width="300" height="90" viewBox="0 0 300 90" preserveAspectRatio="none">
-            <polyline points="0,20 52,22 103,26 155,34 207,44 258,52 300,58" fill="none" stroke="#D02F3F" stroke-width="2"/>
-          </svg>
-        </div>
-        <div class="section-divider"></div>
-        <div class="cat-list">
-          <div class="cat-item" style="border-bottom:none;">
-            <div class="cat-dot" style="background:#9C39B6;"></div>
-            <div class="cat-name">クレジットカード</div>
-            <div class="cat-right">
-              <div class="cat-amount">¥1,240,000</div>
-              <div class="cat-diff-row">
-                <span class="cat-diff-label">前日比：</span>
-                <span class="cat-diff-val" style="color:var(--dark);">¥0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div style="background:var(--bg);margin:8px 16px;border-radius:10px;border:1px solid var(--border);padding:12px;font-size:11px;color:var(--secondary);text-align:center;line-height:1.7;">
-          負債の大半がクレジットカードの引き落とし待ちです。<br>ローンなし。モニタリング優先度は低めです。
-        </div>
-        <div style="height:12px;"></div>
+
+        <div style="height:8px;"></div>
       </div>
 
     </div><!-- /推移タブ -->
@@ -1063,10 +1384,7 @@
          内訳タブ
     ============================================================ -->
     <div class="tab-panel" id="panel-uciwake">
-      <div class="toggle-group">
-        <div class="toggle-btn active" onclick="switchView('uciwake','asset',this)">資産</div>
-        <div class="toggle-btn" onclick="switchView('uciwake','debt',this)">負債</div>
-      </div>
+      <!-- Toggle不要（資産のみ表示） -->
       <div id="uciwake-asset">
         <div class="donut-wrap">
           <svg width="108" height="108" viewBox="0 0 108 108">
@@ -1157,14 +1475,6 @@
         </div>
 
         <div style="height:12px;"></div>
-      </div>
-      <div id="uciwake-debt" style="display:none;">
-        <div style="background:var(--bg);border-radius:10px;border:1px solid var(--border);margin:0 16px 12px;padding:16px;text-align:center;font-size:12px;color:var(--secondary);">
-          <p style="font-weight:700;font-size:14px;margin-bottom:6px;">負債合計 ¥1,240,000</p>
-          <p>クレジットカードの引き落とし待ちのみです。</p>
-        </div>
-        <div class="cat-row"><div class="cat-icon-dot" style="background:#9C39B6"></div><span class="cat-row-name">クレジットカード</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:100%;background:#9C39B6;"></div></div><div class="cat-row-amount">¥1,240,000</div></div>
-        <div style="height:8px;"></div>
       </div>
     </div>
 
@@ -1285,7 +1595,7 @@
     <div class="anno-section-title">未決事項</div>
     <div class="anno-item q">
       <span class="anno-tag q">検討</span>
-      <p><strong>負債タブ</strong><br>クレカのみの場合に推移グラフを省略or簡略化する判定ロジックが必要。</p>
+      <p><strong>純資産タブ未連携時の表示</strong><br>住宅ローン等の大型負債が未連携の場合、口座追加への誘導が必要。</p>
     </div>
     <div class="anno-item q">
       <span class="anno-tag q">検討</span>
@@ -1311,7 +1621,7 @@
     const group = btnEl.closest('.toggle-group');
     group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
-    ['asset','pl','debt'].forEach(s => {
+    ['asset','pl','simulation'].forEach(s => {
       const el = document.getElementById(prefix + '-' + s);
       if (el) el.style.display = 'none';
     });
@@ -1323,6 +1633,108 @@
     el.closest('.period-selector').querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
   }
+
+  // Simulation panel functions
+  let simulationParams = {
+    target: 5000,      // 5000万円
+    monthly: 40000,    // 40,000円
+    returnRate: 5      // 5.0%
+  };
+
+  function updateTarget(value) {
+    simulationParams.target = value;
+    const manEn = Math.floor(value / 100);
+    document.getElementById('target-display').textContent = (manEn * 10).toLocaleString('ja-JP') + '万円';
+    updateProgress();
+  }
+
+  function updateMonthly(value) {
+    simulationParams.monthly = value;
+    document.getElementById('monthly-display').textContent = '¥' + Number(value).toLocaleString('ja-JP');
+    updateProgress();
+  }
+
+  function updateReturn(value) {
+    simulationParams.returnRate = parseFloat(value);
+    document.getElementById('return-display').textContent = simulationParams.returnRate.toFixed(1) + '%';
+    updateProgress();
+  }
+
+  function updateProgress() {
+    // Simple projection: 現在の資産28,450,000から目標額に向けて
+    const currentAsset = 28450000;
+    const targetAmount = simulationParams.target * 1000000;
+    const progressPercent = Math.min(Math.round((currentAsset / targetAmount) * 100), 100);
+
+    document.getElementById('progress-percent').textContent = progressPercent + '%';
+    document.getElementById('progress-fill').style.width = progressPercent + '%';
+    document.getElementById('achieved-amount').textContent = '¥' + Math.round(currentAsset / 10000).toLocaleString('ja-JP') + '万';
+
+    const remaining = Math.max(0, targetAmount - currentAsset);
+    document.getElementById('remaining-amount').textContent = '¥' + Math.round(remaining / 10000).toLocaleString('ja-JP') + '万';
+  }
+
+  function switchSimulation(el) {
+    // Hide all views in the suihi tab
+    ['asset','pl','net','simulation'].forEach(s => {
+      const elem = document.getElementById('suihi-' + s);
+      if (elem) elem.style.display = 'none';
+    });
+    // Show simulation view
+    const simView = document.getElementById('suihi-simulation');
+    if (simView) simView.style.display = 'block';
+    // Scroll to top
+    document.querySelector('.content').scrollTop = 0;
+  }
+
+  function saveInvestmentSettings() {
+    // Get current values
+    const target = simulationParams.target;
+    const returnRate = simulationParams.returnRate;
+
+    // Create settings object
+    const settings = {
+      targetAmount: target * 1000000,
+      targetDisplay: (Math.floor(target / 100) * 10).toLocaleString('ja-JP') + '万円',
+      riskTolerance: returnRate,
+      riskDisplay: returnRate.toFixed(1) + '%',
+      savedDate: new Date().toLocaleString('ja-JP')
+    };
+
+    // Save to localStorage
+    localStorage.setItem('investmentSettings', JSON.stringify(settings));
+
+    // Show notification
+    const notif = document.getElementById('save-notification');
+    if (!notif) {
+      const div = document.createElement('div');
+      div.id = 'save-notification';
+      div.className = 'save-notification show';
+      div.textContent = '✓ 目標とリスク許容度を保存しました';
+      document.body.appendChild(div);
+    } else {
+      notif.classList.add('show');
+    }
+
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+      const n = document.getElementById('save-notification');
+      if (n) n.classList.remove('show');
+    }, 2000);
+  }
+
+  // Load saved settings on page load
+  function loadInvestmentSettings() {
+    const saved = localStorage.getItem('investmentSettings');
+    if (saved) {
+      const settings = JSON.parse(saved);
+      // Log to console for verification
+      console.log('Saved settings:', settings);
+    }
+  }
+
+  // Call on page load
+  window.addEventListener('load', loadInvestmentSettings);
 </script>
 </body>
 </html>
