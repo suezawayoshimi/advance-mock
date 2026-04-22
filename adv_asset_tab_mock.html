@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ME ADV 資産タブ モック</title>
+  <style>
+    :root {
+      --dark: #181716;
+      --orange: #ED7100;
+      --blue: #316FEE;
+      --bg: #F6F6F5;
+      --border: #E0DDD9;
+      --muted: #B6B2AF;
+      --secondary: #5D5956;
+      --profit: #316FEE;
+      --loss: #D02F3F;
+      --cat-fund: #FCAD4C;
+      --cat-equity: #DF3727;
+      --cat-pension: #008986;
+      --cat-deposit: #2881D7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      background: #C8C4C0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 32px 20px;
+      gap: 28px;
+    }
+
+    /* ===== Phone Frame ===== */
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: white;
+      border-radius: 44px;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.32), 0 0 0 1px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    /* Status bar */
+    .status-bar {
+      background: white;
+      padding: 14px 20px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Nav header */
+    .nav-header {
+      background: white;
+      padding: 4px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .nav-title { font-size: 17px; font-weight: 600; color: var(--dark); }
+    .nav-refresh {
+      position: absolute;
+      right: 16px;
+      font-size: 20px;
+      color: var(--dark);
+    }
+
+    /* Sub-tabs */
+    .sub-tabs {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-shrink: 0;
+    }
+    .sub-tab {
+      flex: 1;
+      padding: 10px 2px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .sub-tab.active { color: var(--orange); font-weight: 700; border-bottom-color: var(--orange); }
+
+    /* Scrollable content */
+    .content { flex: 1; overflow-y: auto; background: var(--bg); }
+    .content::-webkit-scrollbar { display: none; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ===== 推移タブ: 資産ビュー ===== */
+    .asset-header {
+      background: white;
+      padding: 16px 16px 0;
+    }
+    .asset-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .asset-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--dark);
+      padding-top: 4px;
+    }
+    .asset-amount-block { text-align: right; }
+    .asset-total {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.5px;
+    }
+    .asset-compare-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .asset-compare-label {
+      font-size: 11px;
+      color: var(--secondary);
+    }
+    .asset-compare-val {
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .asset-compare-val.profit { color: var(--profit); }
+    .asset-compare-val.loss { color: var(--loss); }
+    .arrow-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .arrow-up { background: var(--profit); }
+    .arrow-down { background: var(--loss); }
+
+    /* Graph controls */
+    .graph-controls {
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px 8px;
+    }
+    .graph-type-btn, .graph-period-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--dark);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .graph-type-btn span, .graph-period-btn span {
+      font-size: 10px;
+      color: var(--secondary);
+    }
+
+    /* Stacked area chart */
+    .chart-wrap {
+      background: white;
+      padding: 0 0 4px;
+      position: relative;
+    }
+    .chart-y-labels {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 0;
+      width: 56px;
+    }
+    .chart-y-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-align: right;
+      padding-right: 6px;
+    }
+    .chart-x-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 56px 6px 56px;
+    }
+    .chart-x-label { font-size: 9px; color: var(--muted); }
+
+    /* Divider between chart and list */
+    .section-divider {
+      height: 8px;
+      background: var(--bg);
+    }
+
+    /* Category list (実アプリ形式) */
+    .cat-list { background: white; }
+    .cat-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .cat-item:last-child { border-bottom: none; }
+    .cat-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+    .cat-name {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--dark);
+    }
+    .cat-right { text-align: right; }
+    .cat-amount {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--dark);
+      font-variant-numeric: tabular-nums;
+    }
+    .cat-diff-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .cat-diff-label { font-size: 10px; color: var(--secondary); }
+    .cat-diff-val {
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .cat-diff-val.profit { color: var(--profit); }
+    .cat-diff-val.loss { color: var(--loss); }
+    .cat-chevron {
+      margin-left: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Myポートフォリオ（インラインスクロール） */
+    .myportfolio-section {
+      background: white;
+      margin-top: 8px;
+      padding-bottom: 4px;
+    }
+    .myportfolio-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .myportfolio-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .myportfolio-edit {
+      font-size: 12px;
+      color: var(--blue);
+      font-weight: 500;
+    }
+    .myportfolio-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .myportfolio-item:last-child { border-bottom: none; }
+    .myportfolio-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--secondary);
+      flex-shrink: 0;
+      margin-right: 10px;
+      letter-spacing: -0.3px;
+    }
+    .myportfolio-info { flex: 1; min-width: 0; }
+    .myportfolio-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .myportfolio-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .myportfolio-right { text-align: right; flex-shrink: 0; }
+    .myportfolio-amount {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      font-variant-numeric: tabular-nums;
+    }
+    .myportfolio-pl {
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+    .myportfolio-pl.profit { color: var(--profit); }
+    .myportfolio-pl.loss { color: var(--loss); }
+
+    /* ===== 推移: 損益ビュー（ADVのみ） ===== */
+    .toggle-group {
+      display: flex;
+      background: #EEEBE7;
+      margin: 12px 16px;
+      border-radius: 9px;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 7px 6px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--secondary);
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      user-select: none;
+    }
+    .toggle-btn.active {
+      background: white;
+      color: var(--dark);
+      font-weight: 700;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.14);
+    }
+    .adv-badge {
+      position: absolute;
+      top: -7px; right: 4px;
+      background: var(--dark);
+      color: white;
+      font-size: 7px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    /* Period selector */
+    .period-selector {
+      display: flex;
+      gap: 5px;
+      padding: 0 16px 12px;
+      overflow-x: auto;
+    }
+    .period-selector::-webkit-scrollbar { display: none; }
+    .period-btn {
+      padding: 4px 11px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--secondary);
+      background: white;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .period-btn.active { background: var(--dark); color: white; border-color: var(--dark); }
+
+    /* Chart card */
+    .chart-card {
+      background: white;
+      margin: 0 16px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .chart-summary { padding: 14px 16px 8px; }
+    .chart-label { font-size: 11px; color: var(--secondary); margin-bottom: 3px; }
+    .chart-main-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.5px;
+    }
+    .chart-main-value.profit { color: var(--profit); }
+    .chart-sub-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+    .chart-diff { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .chart-diff.profit { color: var(--profit); }
+    .chart-period-label { font-size: 10px; color: var(--muted); }
+    .chart-svg-wrap { padding: 4px 12px 10px; }
+    .index-legend {
+      display: flex;
+      gap: 14px;
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--secondary); }
+    .legend-line { width: 18px; height: 2px; border-radius: 1px; }
+
+    /* KPI grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 0 16px 12px;
+    }
+    .kpi-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 12px 10px;
+    }
+    .kpi-label { font-size: 10px; color: var(--secondary); margin-bottom: 5px; line-height: 1.4; }
+    .kpi-value {
+      font-size: 16px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--dark);
+      letter-spacing: -0.3px;
+    }
+    .kpi-value.profit { color: var(--profit); }
+    .kpi-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    /* Hint card */
+    .hint-card {
+      background: #FFF8F0;
+      border: 1.5px solid #F5C282;
+      border-radius: 14px;
+      margin: 0 16px 12px;
+      padding: 14px;
+    }
+    .hint-header { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+    .hint-icon { font-size: 16px; }
+    .hint-title { font-size: 12px; font-weight: 700; color: var(--dark); }
+    .hint-badge {
+      background: var(--orange); color: white;
+      font-size: 9px; font-weight: 700;
+      padding: 2px 7px; border-radius: 4px; margin-left: auto;
+    }
+    .hint-body { font-size: 11px; color: var(--secondary); line-height: 1.75; }
+    .hint-body strong { color: var(--dark); font-weight: 700; }
+    .hint-highlight { font-size: 15px; font-weight: 700; color: var(--loss); }
+    .hint-cta {
+      margin-top: 12px; padding-top: 10px;
+      border-top: 1px solid #F5C282;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .hint-cta-note { font-size: 10px; color: var(--muted); }
+    .hint-cta-btn { font-size: 11px; font-weight: 700; color: var(--orange); cursor: pointer; }
+
+    /* ===== リスク検知 ===== */
+    .risk-section {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin: 8px 16px 0;
+      overflow: hidden;
+    }
+    .risk-section-header {
+      display: flex;
+      align-items: center;
+      padding: 11px 14px 9px;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .risk-section-title { font-size: 12px; font-weight: 700; color: var(--dark); }
+    .risk-adv-badge {
+      background: var(--dark); color: white;
+      font-size: 8px; font-weight: 700;
+      padding: 1px 5px; border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .risk-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      gap: 10px;
+      border-bottom: 1px solid #F6F6F5;
+    }
+    .risk-item:last-child { border-bottom: none; }
+    .risk-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .risk-item-body { flex: 1; min-width: 0; }
+    .risk-item-name { font-size: 11px; font-weight: 700; color: var(--dark); margin-bottom: 2px; }
+    .risk-item-desc { font-size: 10px; color: var(--secondary); line-height: 1.45; }
+    .risk-level-badge {
+      font-size: 9px; font-weight: 700;
+      padding: 3px 8px; border-radius: 10px;
+      flex-shrink: 0; white-space: nowrap;
+    }
+    .risk-level-high { background: #FDECEA; color: #D02F3F; }
+    .risk-level-mid  { background: #FFF0E0; color: #ED7100; }
+    .risk-level-low  { background: #E8F5E9; color: #2E7D32; }
+
+    /* ===== 内訳タブ ===== */
+    .donut-wrap {
+      background: white;
+      margin: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .donut-legend { flex: 1; }
+    .donut-legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; font-size: 11px; }
+    .donut-legend-item:last-child { margin-bottom: 0; }
+    .donut-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .donut-legend-name { flex: 1; color: var(--secondary); }
+    .donut-legend-pct { font-weight: 700; color: var(--dark); min-width: 30px; text-align: right; }
+    .section-header { padding: 12px 16px 6px; font-size: 11px; font-weight: 700; color: var(--secondary); letter-spacing: 0.06em; text-transform: uppercase; }
+    .cat-row {
+      background: white;
+      margin: 0 16px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cat-icon-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .cat-row-name { flex: 1; font-size: 13px; font-weight: 500; color: var(--dark); }
+    .cat-bar-wrap { width: 56px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .cat-bar { height: 100%; border-radius: 2px; }
+    .cat-row-amount { font-size: 13px; font-weight: 700; color: var(--dark); font-variant-numeric: tabular-nums; text-align: right; min-width: 90px; }
+
+    /* ===== ポートフォリオタブ ===== */
+    .holdings-toolbar { padding: 10px 16px 6px; display: flex; justify-content: space-between; align-items: center; }
+    .holdings-toolbar-label { font-size: 11px; color: var(--secondary); }
+    .holdings-toolbar-action { font-size: 11px; color: var(--blue); font-weight: 600; cursor: pointer; }
+    .holdings-list { background: white; margin: 0 16px 12px; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
+    .holding-item { padding: 11px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .holding-item:last-child { border-bottom: none; }
+    .holding-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: var(--bg); display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800; color: var(--secondary);
+      flex-shrink: 0; border: 1px solid var(--border); letter-spacing: -0.3px;
+    }
+    .holding-info { flex: 1; min-width: 0; }
+    .holding-name { font-size: 12px; font-weight: 600; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .holding-meta { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .holding-right { text-align: right; flex-shrink: 0; }
+    .holding-amount { font-size: 13px; font-weight: 700; color: var(--dark); font-variant-numeric: tabular-nums; }
+    .holding-pl { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
+    .holding-pl.profit { color: var(--profit); }
+    .holding-pl.loss { color: var(--loss); }
+    .news-section { margin: 0 16px 12px; }
+    .news-section-title { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .news-item-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
+    .news-item-tag { display: inline-block; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; font-size: 9px; font-weight: 700; padding: 2px 6px; color: var(--secondary); margin-bottom: 5px; }
+    .news-item-title { font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.5; margin-bottom: 5px; }
+    .news-item-meta { font-size: 10px; color: var(--muted); }
+
+    /* ===== 配当タブ ===== */
+    .coming-soon { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; text-align: center; }
+    .coming-soon-icon { font-size: 52px; margin-bottom: 16px; }
+    .coming-soon-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+    .coming-soon-desc { font-size: 13px; color: var(--secondary); line-height: 1.75; }
+
+    /* ===== Bottom tab bar ===== */
+    .tab-bar {
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      padding: 6px 0 18px;
+      flex-shrink: 0;
+    }
+    .tab-bar-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: var(--muted); cursor: pointer; user-select: none; padding: 2px 0; }
+    .tab-bar-btn.active { color: var(--orange); }
+    .tab-bar-btn svg { width: 22px; height: 22px; }
+
+    /* ===== Annotation Panel ===== */
+    .annotations { width: 260px; flex-shrink: 0; }
+    .anno-title { font-size: 15px; font-weight: 700; color: #2d3748; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #CBD5E0; }
+    .anno-section { margin-bottom: 18px; }
+    .anno-section-title { font-size: 10px; font-weight: 700; color: #718096; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 7px; }
+    .anno-item { background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 7px; font-size: 11px; line-height: 1.65; color: #4A5568; border-left: 3px solid #CBD5E0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .anno-item.new { border-left-color: #ED7100; }
+    .anno-item.adv { border-left-color: #316FEE; }
+    .anno-item.q { border-left-color: #9C39B6; background: #FDF6FF; }
+    .anno-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-bottom: 4px; }
+    .anno-tag.new { background: #FFF0E0; color: #ED7100; }
+    .anno-tag.adv { background: #E8EFFE; color: #316FEE; }
+    .anno-tag.fix { background: #E8F5E9; color: #2E7D32; }
+    .anno-tag.q { background: #F3E8FF; color: #7B2D9C; }
+    .anno-item p { margin: 0; }
+    .anno-item strong { color: #2D3748; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Phone ===== -->
+<div class="phone">
+  <div class="status-bar">
+    <span>12:25</span>
+    <span style="font-size:11px;">●●● 4G 🔋</span>
+  </div>
+
+  <div class="nav-header">
+    <div class="nav-title">資産</div>
+    <div class="nav-refresh">↻</div>
+  </div>
+
+  <!-- Sub-tabs: 推移 | 内訳 | 保有銘柄 | 配当 -->
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSubTab('suihi', this)">推移</div>
+    <div class="sub-tab" onclick="switchSubTab('uciwake', this)">内訳</div>
+    <div class="sub-tab" onclick="switchSubTab('portfolio', this)">保有銘柄</div>
+    <div class="sub-tab" onclick="switchSubTab('dividend', this)">配当</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ============================================================
+         推移タブ
+    ============================================================ -->
+    <div class="tab-panel active" id="panel-suihi">
+
+      <!-- Toggle: 資産 | 損益（ADV） | 負債 -->
+      <div class="toggle-group">
+        <div class="toggle-btn active" onclick="switchView('suihi','asset',this)">資産</div>
+        <div class="toggle-btn" onclick="switchView('suihi','pl',this)" style="position:relative;">
+          損益<span class="adv-badge">ADV</span>
+        </div>
+        <div class="toggle-btn" onclick="switchView('suihi','debt',this)">負債</div>
+      </div>
+
+      <!-- ── 資産ビュー ── -->
+      <div id="suihi-asset">
+
+        <!-- 合計 + 前日比 -->
+        <div class="asset-header">
+          <div class="asset-header-top">
+            <div class="asset-label">合計</div>
+            <div class="asset-amount-block">
+              <div class="asset-total">¥28,450,000</div>
+              <div class="asset-compare-row">
+                <span class="asset-compare-label">6ヶ月前比：</span>
+                <span class="asset-compare-val profit">¥4,820,000</span>
+                <span class="arrow-icon arrow-up">↑</span>
+              </div>
+              <div class="asset-compare-row">
+                <span class="asset-compare-label">前日比：</span>
+                <span class="asset-compare-val loss">¥-42,300</span>
+                <span class="arrow-icon arrow-down">↓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- グラフ種別・期間セレクタ -->
+        <div class="graph-controls">
+          <div class="graph-type-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 10 L4 6 L7 8 L10 4 L13 2" stroke="#5D5956" stroke-width="1.5" fill="none"/><path d="M1 10 L4 6 L7 8 L10 4 L13 2 L13 12 L1 12Z" fill="#FCAD4C" opacity="0.3"/></svg>
+            積上面グラフ <span>▼</span>
+          </div>
+          <div class="graph-period-btn">
+            6ヶ月 <span>▼</span>
+          </div>
+        </div>
+
+        <!-- 積上面グラフ（SVG） -->
+        <div class="chart-wrap">
+          <div style="position:relative; padding: 4px 0 0 52px;">
+            <!-- Y labels -->
+            <div style="position:absolute;left:0;top:6px;bottom:20px;display:flex;flex-direction:column;justify-content:space-between;width:52px;text-align:right;padding-right:6px;">
+              <span style="font-size:9px;color:var(--muted);">2850万円</span>
+              <span style="font-size:9px;color:var(--muted);">1425万円</span>
+              <span style="font-size:9px;color:var(--muted);">0円</span>
+            </div>
+
+            <!-- Chart SVG -->
+            <svg width="310" height="130" viewBox="0 0 310 130" preserveAspectRatio="none">
+              <!-- Grid lines -->
+              <line x1="0" y1="10" x2="310" y2="10" stroke="#F0EDE9" stroke-width="0.5"/>
+              <line x1="0" y1="65" x2="310" y2="65" stroke="#F0EDE9" stroke-width="0.5"/>
+
+              <!-- 投資信託（yellow/orange） bottom layer -->
+              <polygon
+                points="0,108 52,105 103,103 155,100 207,98 258,95 310,92 310,120 0,120"
+                fill="#FCAD4C" opacity="0.7"/>
+
+              <!-- 株式（red） second layer -->
+              <polygon
+                points="0,72 52,70 103,68 155,64 207,60 258,56 310,52 310,92 258,95 207,98 155,100 103,103 52,105 0,108"
+                fill="#DF3727" opacity="0.65"/>
+
+              <!-- 年金（teal） third layer -->
+              <polygon
+                points="0,36 52,34 103,32 155,30 207,28 258,26 310,24 310,52 258,56 207,60 155,64 103,68 52,70 0,72"
+                fill="#008986" opacity="0.55"/>
+
+              <!-- 預金（blue） top layer -->
+              <polygon
+                points="0,26 52,24 103,22 155,20 207,18 258,17 310,16 310,24 258,26 207,28 155,30 103,32 52,34 0,36"
+                fill="#2881D7" opacity="0.5"/>
+
+              <!-- Total line -->
+              <polyline
+                points="0,26 52,24 103,22 155,20 207,18 258,17 310,16"
+                fill="none" stroke="#316FEE" stroke-width="1.5" stroke-linejoin="round"/>
+
+              <!-- Spike (like in screenshot) at ~52 -->
+              <polyline
+                points="52,24 55,4 58,24"
+                fill="none" stroke="#316FEE" stroke-width="1.5"/>
+            </svg>
+          </div>
+
+          <!-- X labels -->
+          <div class="chart-x-labels" style="padding: 2px 16px 4px 56px; display:flex; justify-content:space-between;">
+            <span style="font-size:9px;color:var(--muted);">10月</span>
+            <span style="font-size:9px;color:var(--muted);">12月</span>
+            <span style="font-size:9px;color:var(--muted);">1月</span>
+            <span style="font-size:9px;color:var(--muted);">3月</span>
+            <span style="font-size:9px;color:var(--muted);">4月</span>
+          </div>
+        </div>
+
+        <!-- カテゴリリスト -->
+        <div class="section-divider"></div>
+        <div class="cat-list">
+          <div class="cat-item">
+            <div class="cat-dot" style="background:var(--cat-fund);"></div>
+            <div class="cat-name">投資信託</div>
+            <div class="cat-right">
+              <div class="cat-amount">¥11,095,000</div>
+              <div class="cat-diff-row">
+                <span class="cat-diff-label">前日比：</span>
+                <span class="cat-diff-val profit">¥+68,200</span>
+                <span class="arrow-icon arrow-up" style="width:14px;height:14px;font-size:7px;">↑</span>
+              </div>
+            </div>
+            <div class="cat-chevron">›</div>
+          </div>
+          <div class="cat-item">
+            <div class="cat-dot" style="background:var(--cat-equity);"></div>
+            <div class="cat-name">株式（現物）</div>
+            <div class="cat-right">
+              <div class="cat-amount">¥9,755,000</div>
+              <div class="cat-diff-row">
+                <span class="cat-diff-label">前日比：</span>
+                <span class="cat-diff-val loss">¥-98,400</span>
+                <span class="arrow-icon arrow-down" style="width:14px;height:14px;font-size:7px;">↓</span>
+              </div>
+            </div>
+            <div class="cat-chevron">›</div>
+          </div>
+          <div class="cat-item">
+            <div class="cat-dot" style="background:var(--cat-pension);"></div>
+            <div class="cat-name">年金</div>
+            <div class="cat-right">
+              <div class="cat-amount">¥4,850,000</div>
+              <div class="cat-diff-row">
+                <span class="cat-diff-label">前日比：</span>
+                <span class="cat-diff-val profit">¥+12,100</span>
+                <span class="arrow-icon arrow-up" style="width:14px;height:14px;font-size:7px;">↑</span>
+              </div>
+            </div>
+            <div class="cat-chevron">›</div>
+          </div>
+          <div class="cat-item" style="border-bottom:none;">
+            <div class="cat-dot" style="background:var(--cat-deposit);"></div>
+            <div class="cat-name">預金・現金・暗号資産</div>
+            <div class="cat-right">
+              <div class="cat-amount">¥2,750,000</div>
+              <div class="cat-diff-row">
+                <span class="cat-diff-label">前日比：</span>
+                <span class="cat-diff-val loss">¥-151</span>
+                <span class="arrow-icon arrow-down" style="width:14px;height:14px;font-size:7px;">↓</span>
+              </div>
+            </div>
+            <div class="cat-chevron">›</div>
+          </div>
+        </div>
+
+        <!-- Myポートフォリオ（インラインスクロール） -->
+        <div class="myportfolio-section">
+          <div class="myportfolio-header">
+            <div class="myportfolio-title">📊 Myポートフォリオ</div>
+            <div class="myportfolio-edit">編集</div>
+          </div>
+          <div class="myportfolio-item">
+            <div class="myportfolio-icon">世界<br>分散</div>
+            <div class="myportfolio-info">
+              <div class="myportfolio-name">世界分散ポートフォリオ</div>
+              <div class="myportfolio-sub">VTI・オルカン・VOO ほか</div>
+            </div>
+            <div class="myportfolio-right">
+              <div class="myportfolio-amount">¥18,200,000</div>
+              <div class="myportfolio-pl profit">+¥3,240,000（+17.8%）</div>
+            </div>
+          </div>
+          <div class="myportfolio-item" style="border-bottom:none;">
+            <div class="myportfolio-icon">高配<br>当</div>
+            <div class="myportfolio-info">
+              <div class="myportfolio-name">高配当・個別株</div>
+              <div class="myportfolio-sub">トヨタ・三菱UFJ・NVDA ほか</div>
+            </div>
+            <div class="myportfolio-right">
+              <div class="myportfolio-amount">¥2,880,000</div>
+              <div class="myportfolio-pl loss">-¥188,000（-6.1%）</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:12px;"></div>
+      </div><!-- /suihi-asset -->
+
+      <!-- ── 損益ビュー（ADVのみ） ── -->
+      <div id="suihi-pl" style="display:none;">
+        <div class="period-selector">
+          <div class="period-btn" onclick="setPeriod(this)">1週</div>
+          <div class="period-btn" onclick="setPeriod(this)">1ヶ月</div>
+          <div class="period-btn active" onclick="setPeriod(this)">3ヶ月</div>
+          <div class="period-btn" onclick="setPeriod(this)">6ヶ月</div>
+          <div class="period-btn" onclick="setPeriod(this)">1年</div>
+          <div class="period-btn" onclick="setPeriod(this)">全期間</div>
+        </div>
+        <div class="chart-card" style="padding-bottom:10px;">
+          <div class="chart-summary">
+            <div class="chart-label">評価損益 累計</div>
+            <div class="chart-main-value profit">+¥3,240,000</div>
+            <div class="chart-sub-row">
+              <span class="chart-diff profit">+¥420,000</span>
+              <span class="chart-period-label">3ヶ月前比</span>
+            </div>
+          </div>
+          <!-- Bar chart -->
+          <div style="position:relative;margin-top:10px;display:flex;align-items:stretch;">
+            <!-- Y-axis labels -->
+            <div style="display:flex;flex-direction:column;justify-content:space-between;width:36px;padding-right:4px;text-align:right;padding-bottom:18px;">
+              <span style="font-size:8px;color:var(--muted);line-height:1;">+400万</span>
+              <span style="font-size:8px;color:var(--muted);line-height:1;">0</span>
+              <span style="font-size:8px;color:var(--muted);line-height:1;">-100万</span>
+            </div>
+            <div style="flex:1;overflow:hidden;">
+              <svg width="100%" height="115" viewBox="0 0 256 115" preserveAspectRatio="none">
+                <!-- Grid top -->
+                <line x1="0" y1="20" x2="256" y2="20" stroke="#F0EDE9" stroke-width="0.8"/>
+                <!-- Zero baseline -->
+                <line x1="0" y1="78" x2="256" y2="78" stroke="#C8C5C1" stroke-width="1.2"/>
+                <!-- Below-zero subtle tint -->
+                <rect x="0" y="78" width="256" height="27" fill="#D02F3F" opacity="0.04"/>
+
+                <!-- Profit bars (blue, above zero) -->
+                <rect x="1"   y="65" width="13" height="13" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk1 +90万 -->
+                <rect x="21"  y="58" width="13" height="20" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk2 +140万 -->
+                <!-- Loss: Week 3 -->
+                <rect x="41"  y="78" width="13" height="7"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk3 -45万 -->
+                <rect x="61"  y="55" width="13" height="23" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk4 +160万 -->
+                <rect x="80"  y="45" width="13" height="33" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk5 +230万 -->
+                <!-- Loss: Week 6 -->
+                <rect x="100" y="78" width="13" height="7"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk6 -50万 -->
+                <rect x="120" y="49" width="13" height="29" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk7 +200万 -->
+                <!-- Loss: Week 8 (tiny) -->
+                <rect x="139" y="78" width="13" height="4"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk8 -30万 -->
+                <rect x="159" y="38" width="13" height="40" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk9 +280万 -->
+                <rect x="179" y="41" width="13" height="37" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk10 +260万 -->
+                <!-- Loss: Week 11 -->
+                <rect x="198" y="78" width="13" height="13" rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk11 -90万 -->
+                <rect x="218" y="34" width="13" height="44" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk12 +310万 -->
+                <rect x="238" y="24" width="13" height="54" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk13 +380万 -->
+
+                <!-- S&P500 comparison dots (orange) -->
+                <circle cx="7"   cy="69" r="2.5" fill="#FCAD4C"/>
+                <circle cx="27"  cy="62" r="2.5" fill="#FCAD4C"/>
+                <circle cx="47"  cy="82" r="2.5" fill="#FCAD4C"/>
+                <circle cx="67"  cy="59" r="2.5" fill="#FCAD4C"/>
+                <circle cx="86"  cy="49" r="2.5" fill="#FCAD4C"/>
+                <circle cx="106" cy="82" r="2.5" fill="#FCAD4C"/>
+                <circle cx="126" cy="53" r="2.5" fill="#FCAD4C"/>
+                <circle cx="145" cy="80" r="2.5" fill="#FCAD4C"/>
+                <circle cx="165" cy="42" r="2.5" fill="#FCAD4C"/>
+                <circle cx="185" cy="45" r="2.5" fill="#FCAD4C"/>
+                <circle cx="204" cy="83" r="2.5" fill="#FCAD4C"/>
+                <circle cx="224" cy="38" r="2.5" fill="#FCAD4C"/>
+                <circle cx="244" cy="28" r="2.5" fill="#FCAD4C"/>
+
+                <!-- オルカン comparison dots (gray) -->
+                <circle cx="7"   cy="72" r="2" fill="#B6B2AF"/>
+                <circle cx="27"  cy="65" r="2" fill="#B6B2AF"/>
+                <circle cx="47"  cy="81" r="2" fill="#B6B2AF"/>
+                <circle cx="67"  cy="62" r="2" fill="#B6B2AF"/>
+                <circle cx="86"  cy="53" r="2" fill="#B6B2AF"/>
+                <circle cx="106" cy="81" r="2" fill="#B6B2AF"/>
+                <circle cx="126" cy="57" r="2" fill="#B6B2AF"/>
+                <circle cx="145" cy="79" r="2" fill="#B6B2AF"/>
+                <circle cx="165" cy="46" r="2" fill="#B6B2AF"/>
+                <circle cx="185" cy="49" r="2" fill="#B6B2AF"/>
+                <circle cx="204" cy="82" r="2" fill="#B6B2AF"/>
+                <circle cx="224" cy="42" r="2" fill="#B6B2AF"/>
+                <circle cx="244" cy="32" r="2" fill="#B6B2AF"/>
+              </svg>
+              <!-- X-axis labels -->
+              <div style="display:flex;justify-content:space-between;padding:2px 4px 0;font-size:9px;color:var(--muted);">
+                <span>1月</span><span>2月</span><span>3月</span><span>4月</span>
+              </div>
+            </div>
+          </div>
+          <!-- Legend with dots -->
+          <div class="index-legend" style="margin-top:8px;">
+            <div class="legend-item">
+              <div style="width:8px;height:8px;border-radius:50%;background:#316FEE;margin-right:5px;flex-shrink:0;"></div>
+              <span>自分 <strong style="color:#316FEE">+17.8%</strong></span>
+            </div>
+            <div class="legend-item">
+              <div style="width:7px;height:7px;border-radius:50%;background:#FCAD4C;margin-right:5px;flex-shrink:0;"></div>
+              <span>S&amp;P500 <strong>+14.2%</strong></span>
+            </div>
+            <div class="legend-item">
+              <div style="width:7px;height:7px;border-radius:50%;background:#B6B2AF;margin-right:5px;flex-shrink:0;"></div>
+              <span>オルカン <strong>+11.5%</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">評価損益</div>
+            <div class="kpi-value profit">+¥3,240,000</div>
+            <div class="kpi-sub">前日比 +¥68,000</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">実現損益（今年）</div>
+            <div class="kpi-value profit">+¥850,000</div>
+            <div class="kpi-sub">税引後 +¥637,500</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">年間配当（受取済）</div>
+            <div class="kpi-value">¥124,000</div>
+            <div class="kpi-sub">前年比 +¥18,000</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">年間リターン</div>
+            <div class="kpi-value profit">+17.8%</div>
+            <div class="kpi-sub">vs S&amp;P500 +3.6pt</div>
+          </div>
+        </div>
+        <div class="hint-card">
+          <div class="hint-header">
+            <span class="hint-icon">💡</span>
+            <span class="hint-title">節税ヒント</span>
+            <span class="hint-badge">年末まで83日</span>
+          </div>
+          <div class="hint-body">
+            今年の確定利益は <strong>¥850,000</strong>（税額 ¥212,500）。<br>
+            含み損銘柄を損切りして課税所得を圧縮できます。<br><br>
+            損切り候補の含み損合計：<span class="hint-highlight">−¥510,000</span><br>
+            <span style="font-size:10px;color:var(--muted);">三菱UFJ・ヤマダHD など4銘柄</span><br><br>
+            全額損切りした場合の節税効果：<strong>¥127,500</strong>
+          </div>
+          <div class="hint-cta">
+            <span class="hint-cta-note">根拠：所得税・住民税20.315%</span>
+            <span class="hint-cta-btn">損切り候補を見る ›</span>
+          </div>
+        </div>
+        <div style="height:12px;"></div>
+      </div>
+
+      <!-- ── 負債ビュー ── -->
+      <div id="suihi-debt" style="display:none;">
+        <div class="asset-header">
+          <div class="asset-header-top">
+            <div class="asset-label">合計</div>
+            <div class="asset-amount-block">
+              <div class="asset-total">¥1,240,000</div>
+              <div class="asset-compare-row">
+                <span class="asset-compare-label">6ヶ月前比：</span>
+                <span class="asset-compare-val profit">¥-88,000</span>
+                <span class="arrow-icon arrow-up">↑</span>
+              </div>
+              <div class="asset-compare-row">
+                <span class="asset-compare-label">前日比：</span>
+                <span class="asset-compare-val" style="color:var(--dark);">¥0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="graph-controls">
+          <div class="graph-type-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 10 L4 6 L7 8 L10 4 L13 2" stroke="#5D5956" stroke-width="1.5" fill="none"/></svg>
+            折れ線グラフ <span>▼</span>
+          </div>
+          <div class="graph-period-btn">6ヶ月 <span>▼</span></div>
+        </div>
+        <div class="chart-wrap" style="background:white;padding:8px 16px 12px 52px;">
+          <svg width="300" height="90" viewBox="0 0 300 90" preserveAspectRatio="none">
+            <polyline points="0,20 52,22 103,26 155,34 207,44 258,52 300,58" fill="none" stroke="#D02F3F" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="section-divider"></div>
+        <div class="cat-list">
+          <div class="cat-item" style="border-bottom:none;">
+            <div class="cat-dot" style="background:#9C39B6;"></div>
+            <div class="cat-name">クレジットカード</div>
+            <div class="cat-right">
+              <div class="cat-amount">¥1,240,000</div>
+              <div class="cat-diff-row">
+                <span class="cat-diff-label">前日比：</span>
+                <span class="cat-diff-val" style="color:var(--dark);">¥0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--bg);margin:8px 16px;border-radius:10px;border:1px solid var(--border);padding:12px;font-size:11px;color:var(--secondary);text-align:center;line-height:1.7;">
+          負債の大半がクレジットカードの引き落とし待ちです。<br>ローンなし。モニタリング優先度は低めです。
+        </div>
+        <div style="height:12px;"></div>
+      </div>
+
+    </div><!-- /推移タブ -->
+
+
+    <!-- ============================================================
+         内訳タブ
+    ============================================================ -->
+    <div class="tab-panel" id="panel-uciwake">
+      <div class="toggle-group">
+        <div class="toggle-btn active" onclick="switchView('uciwake','asset',this)">資産</div>
+        <div class="toggle-btn" onclick="switchView('uciwake','debt',this)">負債</div>
+      </div>
+      <div id="uciwake-asset">
+        <div class="donut-wrap">
+          <svg width="108" height="108" viewBox="0 0 108 108">
+            <circle cx="54" cy="54" r="38" fill="none" stroke="#DF3727" stroke-width="19" stroke-dasharray="93 146" stroke-dashoffset="0" transform="rotate(-90 54 54)"/>
+            <circle cx="54" cy="54" r="38" fill="none" stroke="#FCAD4C" stroke-width="19" stroke-dasharray="60 179" stroke-dashoffset="-93" transform="rotate(-90 54 54)"/>
+            <circle cx="54" cy="54" r="38" fill="none" stroke="#2881D7" stroke-width="19" stroke-dasharray="62 177" stroke-dashoffset="-153" transform="rotate(-90 54 54)"/>
+            <circle cx="54" cy="54" r="38" fill="none" stroke="#008986" stroke-width="19" stroke-dasharray="24 215" stroke-dashoffset="-215" transform="rotate(-90 54 54)"/>
+            <text x="54" y="50" text-anchor="middle" font-size="9" fill="#5D5956" font-family="Hiragino Sans,sans-serif">総資産</text>
+            <text x="54" y="63" text-anchor="middle" font-size="9" font-weight="700" fill="#181716" font-family="Hiragino Sans,sans-serif">2,845万</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#DF3727"></div><span class="donut-legend-name">株式</span><span class="donut-legend-pct">39%</span></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#FCAD4C"></div><span class="donut-legend-name">投資信託</span><span class="donut-legend-pct">25%</span></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#2881D7"></div><span class="donut-legend-name">預金・現金</span><span class="donut-legend-pct">26%</span></div>
+            <div class="donut-legend-item"><div class="donut-dot" style="background:#008986"></div><span class="donut-legend-name">年金・保険</span><span class="donut-legend-pct">10%</span></div>
+          </div>
+        </div>
+        <div class="section-header">カテゴリ別</div>
+        <div class="cat-row"><div class="cat-icon-dot" style="background:#DF3727"></div><span class="cat-row-name">株式</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:78%;background:#DF3727;"></div></div><div class="cat-row-amount">¥11,095,000</div></div>
+        <div class="cat-row"><div class="cat-icon-dot" style="background:#FCAD4C"></div><span class="cat-row-name">投資信託</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:50%;background:#FCAD4C;"></div></div><div class="cat-row-amount">¥7,112,000</div></div>
+        <div class="cat-row"><div class="cat-icon-dot" style="background:#2881D7"></div><span class="cat-row-name">預金・現金</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:52%;background:#2881D7;"></div></div><div class="cat-row-amount">¥7,398,000</div></div>
+        <div class="cat-row"><div class="cat-icon-dot" style="background:#008986"></div><span class="cat-row-name">年金・保険</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:20%;background:#008986;"></div></div><div class="cat-row-amount">¥2,845,000</div></div>
+
+        <!-- リスク検知（ADV） -->
+        <div class="section-divider"></div>
+        <div class="risk-section">
+          <div class="risk-section-header">
+            <span style="font-size:15px;">🔍</span>
+            <span class="risk-section-title">リスク検知</span>
+            <span class="risk-adv-badge">ADV</span>
+            <span style="margin-left:auto;font-size:10px;color:var(--orange);font-weight:600;cursor:pointer;">詳細 ›</span>
+          </div>
+          <div class="risk-item">
+            <div class="risk-dot" style="background:#D02F3F;"></div>
+            <div class="risk-item-body">
+              <div class="risk-item-name">米国資産への集中（72%）</div>
+              <div class="risk-item-desc">投資可能資産の約72%が米国市場に集中しています</div>
+            </div>
+            <div class="risk-level-badge risk-level-high">高</div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-dot" style="background:#ED7100;"></div>
+            <div class="risk-item-body">
+              <div class="risk-item-name">為替リスク（USD）</div>
+              <div class="risk-item-desc">円高1円で評価額が約18万円減少する水準です</div>
+            </div>
+            <div class="risk-level-badge risk-level-mid">中</div>
+          </div>
+          <div class="risk-item">
+            <div class="risk-dot" style="background:#2E7D32;"></div>
+            <div class="risk-item-body">
+              <div class="risk-item-name">流動性</div>
+              <div class="risk-item-desc">預金・現金が総資産の26%あり、緊急時に対応できます</div>
+            </div>
+            <div class="risk-level-badge risk-level-low">低</div>
+          </div>
+        </div>
+
+        <!-- Myポートフォリオ（内訳タブ下部） -->
+        <div class="section-divider"></div>
+        <div class="myportfolio-section" style="cursor:pointer;" onclick="switchSubTab('portfolio', document.querySelectorAll('.sub-tab')[2])">
+          <div class="myportfolio-header">
+            <div class="myportfolio-title">📊 Myポートフォリオ</div>
+            <div class="myportfolio-edit" style="color:var(--orange);font-weight:600;">詳細を見る ›</div>
+          </div>
+          <div class="myportfolio-item">
+            <div class="myportfolio-icon">世界<br>分散</div>
+            <div class="myportfolio-info">
+              <div class="myportfolio-name">世界分散ポートフォリオ</div>
+              <div class="myportfolio-sub">VTI・オルカン・VOO ほか</div>
+            </div>
+            <div class="myportfolio-right">
+              <div class="myportfolio-amount">¥18,200,000</div>
+              <div class="myportfolio-pl profit">+¥3,240,000（+17.8%）</div>
+            </div>
+          </div>
+          <div class="myportfolio-item" style="border-bottom:none;">
+            <div class="myportfolio-icon">高配<br>当</div>
+            <div class="myportfolio-info">
+              <div class="myportfolio-name">高配当・個別株</div>
+              <div class="myportfolio-sub">トヨタ・三菱UFJ・NVDA ほか</div>
+            </div>
+            <div class="myportfolio-right">
+              <div class="myportfolio-amount">¥2,880,000</div>
+              <div class="myportfolio-pl loss">-¥188,000（-6.1%）</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:12px;"></div>
+      </div>
+      <div id="uciwake-debt" style="display:none;">
+        <div style="background:var(--bg);border-radius:10px;border:1px solid var(--border);margin:0 16px 12px;padding:16px;text-align:center;font-size:12px;color:var(--secondary);">
+          <p style="font-weight:700;font-size:14px;margin-bottom:6px;">負債合計 ¥1,240,000</p>
+          <p>クレジットカードの引き落とし待ちのみです。</p>
+        </div>
+        <div class="cat-row"><div class="cat-icon-dot" style="background:#9C39B6"></div><span class="cat-row-name">クレジットカード</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:100%;background:#9C39B6;"></div></div><div class="cat-row-amount">¥1,240,000</div></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+
+    <!-- ============================================================
+         ポートフォリオタブ
+    ============================================================ -->
+    <div class="tab-panel" id="panel-portfolio">
+      <div class="holdings-toolbar">
+        <span class="holdings-toolbar-label">7銘柄 ／ 評価損益順</span>
+        <span class="holdings-toolbar-action">並べ替え ›</span>
+      </div>
+      <div class="holdings-list">
+        <div class="holding-item"><div class="holding-icon">VTI</div><div class="holding-info"><div class="holding-name">バンガード・トータル・マーケット</div><div class="holding-meta">VTI · 米国ETF</div></div><div class="holding-right"><div class="holding-amount">¥4,820,000</div><div class="holding-pl profit">+¥1,240,000（+34.6%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">NVDA</div><div class="holding-info"><div class="holding-name">エヌビディア</div><div class="holding-meta">NVDA · 米国株</div></div><div class="holding-right"><div class="holding-amount">¥860,000</div><div class="holding-pl profit">+¥410,000（+91.1%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">eMAXIS</div><div class="holding-info"><div class="holding-name">eMAXIS Slim 全世界株式</div><div class="holding-meta">オルカン · 投資信託</div></div><div class="holding-right"><div class="holding-amount">¥3,210,000</div><div class="holding-pl profit">+¥610,000（+23.5%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">VOO</div><div class="holding-info"><div class="holding-name">バンガード S&amp;P500 ETF</div><div class="holding-meta">VOO · 米国ETF</div></div><div class="holding-right"><div class="holding-amount">¥2,150,000</div><div class="holding-pl profit">+¥398,000（+22.7%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">7203</div><div class="holding-info"><div class="holding-name">トヨタ自動車</div><div class="holding-meta">7203 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥980,000</div><div class="holding-pl profit">+¥142,000（+16.9%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">8306</div><div class="holding-info"><div class="holding-name">三菱UFJフィナンシャル</div><div class="holding-meta">8306 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥620,000</div><div class="holding-pl loss">−¥210,000（−25.3%）</div></div></div>
+        <div class="holding-item"><div class="holding-icon">9831</div><div class="holding-info"><div class="holding-name">ヤマダホールディングス</div><div class="holding-meta">9831 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥280,000</div><div class="holding-pl loss">−¥120,000（−30.0%）</div></div></div>
+      </div>
+      <div class="news-section">
+        <div class="news-section-title">保有銘柄の関連ニュース</div>
+        <div class="news-item-card"><div class="news-item-tag">NVDA</div><div class="news-item-title">エヌビディア、データセンター向け売上が四半期で過去最高を更新</div><div class="news-item-meta">Bloomberg · 2時間前</div></div>
+        <div class="news-item-card"><div class="news-item-tag">7203</div><div class="news-item-title">トヨタ、2025年3月期の純利益予想を上方修正。円安が追い風</div><div class="news-item-meta">日本経済新聞 · 5時間前</div></div>
+        <div class="news-item-card"><div class="news-item-tag">8306</div><div class="news-item-title">三菱UFJ、金利上昇局面でも通期業績予想を据え置き</div><div class="news-item-meta">ロイター · 1日前</div></div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+
+
+    <!-- ============================================================
+         配当タブ
+    ============================================================ -->
+    <div class="tab-panel" id="panel-dividend">
+      <div class="kpi-grid" style="margin-top:12px;">
+        <div class="kpi-card"><div class="kpi-label">今年の受取配当（累計）</div><div class="kpi-value profit">¥124,000</div><div class="kpi-sub">前年比 +¥18,000</div></div>
+        <div class="kpi-card"><div class="kpi-label">年間予想配当</div><div class="kpi-value">¥186,000</div><div class="kpi-sub">配当利回り 1.02%</div></div>
+      </div>
+      <div class="coming-soon">
+        <div class="coming-soon-icon">📅</div>
+        <div class="coming-soon-title">配当カレンダー</div>
+        <div class="coming-soon-desc">権利確定日・配当支払日を<br>カレンダー形式で確認できます。<br><br><span style="font-size:11px;color:var(--muted);">近日公開予定</span></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Bottom tab bar: ホーム | 入出金 | 家計簿 | 口座 | 資産 | ポイント -->
+  <div class="tab-bar">
+    <div class="tab-bar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>ホーム
+    </div>
+    <div class="tab-bar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg>入出金
+    </div>
+    <div class="tab-bar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>家計簿
+    </div>
+    <div class="tab-bar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>口座
+    </div>
+    <div class="tab-bar-btn active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>資産
+    </div>
+    <div class="tab-bar-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>ポイント
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== 右カラム：設計メモ ===== -->
+<div class="annotations">
+  <div class="anno-title">📝 設計メモ</div>
+
+  <div class="anno-section">
+    <div class="anno-section-title">推移 › 資産ビュー</div>
+    <div class="anno-item fix">
+      <span class="anno-tag fix">実機合わせ</span>
+      <p><strong>合計 + 6ヶ月前比 + 前日比</strong><br>実アプリの構成に合わせて2行比較表示。上矢印=プラス（青）、下矢印=マイナス（赤）。</p>
+    </div>
+    <div class="anno-item fix">
+      <span class="anno-tag fix">実機合わせ</span>
+      <p><strong>積上面グラフ ▼ ／ 6ヶ月 ▼</strong><br>グラフ種別・期間のドロップダウン選択UIを実アプリ形式で再現。</p>
+    </div>
+    <div class="anno-item new">
+      <span class="anno-tag new">変更</span>
+      <p><strong>Myポートフォリオをインライン表示</strong><br>カテゴリリスト下にそのままスクロールで表示。タップして別画面に飛ぶ必要なし。</p>
+    </div>
+  </div>
+
+  <div class="anno-section">
+    <div class="anno-section-title">推移 › 損益ビュー（ADV）</div>
+    <div class="anno-item adv">
+      <span class="anno-tag adv">ADV</span>
+      <p><strong>インデックス比較グラフ</strong><br>S&P500・オルカンとの比較を重ねて表示。「人と違うことをやって好成績を取りたい」インサイトに直結。</p>
+    </div>
+    <div class="anno-item adv">
+      <span class="anno-tag adv">ADV</span>
+      <p><strong>節税ヒントカード</strong><br>税率根拠（20.315%）を明示。「売れ」ではなく計算結果の提示として設計。</p>
+    </div>
+  </div>
+
+  <div class="anno-section">
+    <div class="anno-section-title">タブ構成変更</div>
+    <div class="anno-item fix">
+      <span class="anno-tag fix">実機合わせ</span>
+      <p><strong>「保有銘柄」→「ポートフォリオ」</strong><br>実アプリのタブ名称に統一。</p>
+    </div>
+    <div class="anno-item fix">
+      <span class="anno-tag fix">実機合わせ</span>
+      <p><strong>ボトムバー：6タブ構成</strong><br>ホーム / 入出金 / 家計簿 / 口座 / 資産 / ポイント</p>
+    </div>
+  </div>
+
+  <div class="anno-section">
+    <div class="anno-section-title">未決事項</div>
+    <div class="anno-item q">
+      <span class="anno-tag q">検討</span>
+      <p><strong>負債タブ</strong><br>クレカのみの場合に推移グラフを省略or簡略化する判定ロジックが必要。</p>
+    </div>
+    <div class="anno-item q">
+      <span class="anno-tag q">検討</span>
+      <p><strong>Myポートフォリオ</strong><br>ポートフォリオが未作成の場合の空状態・作成誘導UIの設計が必要。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchSubTab(panelId, tabEl) {
+    document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tabEl.classList.add('active');
+    const panel = document.getElementById('panel-' + panelId);
+    panel.classList.add('active');
+    document.querySelector('.content').scrollTop = 0;
+    // タブ切り替え時はデフォルト（最初のトグル）にリセット
+    const firstBtn = panel.querySelector('.toggle-btn');
+    if (firstBtn) firstBtn.click();
+  }
+
+  function switchView(prefix, suffix, btnEl) {
+    const group = btnEl.closest('.toggle-group');
+    group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+    ['asset','pl','debt'].forEach(s => {
+      const el = document.getElementById(prefix + '-' + s);
+      if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById(prefix + '-' + suffix);
+    if (target) target.style.display = 'block';
+  }
+
+  function setPeriod(el) {
+    el.closest('.period-selector').querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
