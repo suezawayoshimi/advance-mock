@@ -592,6 +592,158 @@
     .holding-pl { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 2px; }
     .holding-pl.profit { color: var(--profit); }
     .holding-pl.loss { color: var(--loss); }
+    /* ===== ポートフォリオタブ：カード型レイアウト ===== */
+    .portfolio-controls {
+      background: white;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .portfolio-count {
+      font-size: 11px;
+      color: var(--secondary);
+    }
+    .sort-dropdown, .filter-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 0;
+    }
+    .sort-dropdown::-webkit-scrollbar, .filter-group::-webkit-scrollbar {
+      display: none;
+    }
+    .sort-btn, .filter-checkbox-label {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--secondary);
+      background: white;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .sort-btn.active {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+      font-weight: 600;
+    }
+    .filter-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .filter-checkbox-label input[type="checkbox"] {
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+    }
+    .filter-checkbox-label input[type="checkbox"]:checked {
+      accent-color: var(--dark);
+    }
+
+    /* Holdings container with grouping */
+    .holdings-container {
+      padding: 0 16px 12px;
+    }
+    .holdings-group {
+      margin-bottom: 16px;
+    }
+    .holdings-group-header {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 12px 0 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .holdings-group:last-child .holdings-group-header:last-of-type {
+      border-bottom: none;
+    }
+
+    /* Card-based holding item */
+    .holding-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .holding-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .holding-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--secondary);
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      letter-spacing: -0.3px;
+    }
+    .holding-card-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .holding-card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .holding-card-meta {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .holding-card-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .holding-card-amount {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      font-variant-numeric: tabular-nums;
+    }
+    .holding-card-pl {
+      font-size: 10px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+    .holding-card-pl.profit { color: var(--profit); }
+    .holding-card-pl.loss { color: var(--loss); }
+
     .news-section { margin: 0 16px 12px; }
     .news-section-title { font-size: 11px; font-weight: 700; color: var(--secondary); margin-bottom: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
     .news-item-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; }
@@ -847,6 +999,207 @@
     .anno-tag.q { background: #F3E8FF; color: #7B2D9C; }
     .anno-item p { margin: 0; }
     .anno-item strong { color: #2D3748; }
+
+    /* ===== 損益ビュー（新設計） ===== */
+
+    /* コントロール群 */
+    .pl-controls {
+      background: white;
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pl-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 粒度タブ */
+    .period-granularity {
+      display: flex;
+      background: #EEEBE7;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .granularity-btn {
+      flex: 1;
+      padding: 5px 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.2s;
+    }
+    .granularity-btn.active {
+      background: white;
+      color: var(--dark);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    /* 矢印ナビゲーション */
+    .period-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .period-nav-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 15px;
+      color: var(--secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .period-nav-label {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    /* グループ選択ドロップダウン */
+    .group-select {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--dark);
+      background: white;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235D5956' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+    .group-select-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    /* Hero数値エリア */
+    .pl-hero {
+      background: white;
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pl-hero-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .pl-hero-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.5px;
+      color: var(--dark);
+    }
+    .pl-hero-value.profit { color: var(--profit); }
+    .pl-hero-value.loss   { color: var(--loss); }
+    .pl-hero-period {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 3px;
+      margin-bottom: 14px;
+    }
+
+    /* 内訳（評価・確定横並び） */
+    .pl-breakdown {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .pl-breakdown-item {
+      flex: 1;
+      padding: 10px 12px;
+    }
+    .pl-breakdown-item:first-child {
+      border-right: 1px solid var(--border);
+    }
+    .pl-breakdown-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+    .pl-breakdown-value {
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--dark);
+    }
+    .pl-breakdown-value.profit { color: var(--profit); }
+    .pl-breakdown-value.loss   { color: var(--loss); }
+
+    /* インデックス比較切り替え */
+    .index-toggle {
+      display: flex;
+      gap: 6px;
+      padding: 12px 14px 8px;
+    }
+    .index-toggle-btn {
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--secondary);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .index-toggle-btn.active {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+      font-weight: 600;
+    }
+    .index-compare-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 14px 10px;
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+    .index-compare-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      color: var(--secondary);
+    }
+    .index-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -1083,133 +1436,127 @@
 
       <!-- ── 損益ビュー（ADVのみ） ── -->
       <div id="suihi-pl" style="display:none;">
-        <div class="period-selector">
-          <div class="period-btn" onclick="setPeriod(this)">1週</div>
-          <div class="period-btn" onclick="setPeriod(this)">1ヶ月</div>
-          <div class="period-btn active" onclick="setPeriod(this)">3ヶ月</div>
-          <div class="period-btn" onclick="setPeriod(this)">6ヶ月</div>
-          <div class="period-btn" onclick="setPeriod(this)">1年</div>
-          <div class="period-btn" onclick="setPeriod(this)">全期間</div>
-        </div>
-        <div class="chart-card" style="padding-bottom:10px;">
-          <div class="chart-summary">
-            <div class="chart-label">評価損益 累計</div>
-            <div class="chart-main-value profit">+¥3,240,000</div>
-            <div class="chart-sub-row">
-              <span class="chart-diff profit">+¥420,000</span>
-              <span class="chart-period-label">3ヶ月前比</span>
+
+        <!-- ① コントロール群（粒度タブ・矢印ナビ・グループ選択） -->
+        <div class="pl-controls">
+          <!-- 粒度タブ + 矢印ナビ -->
+          <div class="pl-controls-row">
+            <div class="period-granularity" id="pl-granularity">
+              <button class="granularity-btn" onclick="setGranularity('month', this)">月</button>
+              <button class="granularity-btn active" onclick="setGranularity('quarter', this)">四半期</button>
+              <button class="granularity-btn" onclick="setGranularity('year', this)">年</button>
             </div>
           </div>
-          <!-- Bar chart -->
-          <div style="position:relative;margin-top:10px;display:flex;align-items:stretch;">
-            <!-- Y-axis labels -->
-            <div style="display:flex;flex-direction:column;justify-content:space-between;width:36px;padding-right:4px;text-align:right;padding-bottom:18px;">
+          <div class="period-nav">
+            <button class="period-nav-btn" onclick="shiftPeriod(-1)">‹</button>
+            <span class="period-nav-label" id="pl-period-label">2026 Q1</span>
+            <button class="period-nav-btn" onclick="shiftPeriod(1)">›</button>
+          </div>
+          <!-- グループ選択 -->
+          <div>
+            <div class="group-select-label">表示対象</div>
+            <select class="group-select" onchange="setPlGroup(this.value)">
+              <option value="all">全資産</option>
+              <option value="investment">投資性資産のみ（現金・預金を除く）</option>
+              <option value="pf1">Myポートフォリオ：世界分散</option>
+              <option value="pf2">Myポートフォリオ：高配当・個別株</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ② Hero数値（合計損益 + 内訳） -->
+        <div class="pl-hero">
+          <div class="pl-hero-label">合計損益</div>
+          <div class="pl-hero-value profit" id="pl-hero-total">+¥4,090,000</div>
+          <div class="pl-hero-period" id="pl-hero-period">2026年1月〜3月（四半期）</div>
+          <div class="pl-breakdown">
+            <div class="pl-breakdown-item">
+              <div class="pl-breakdown-label">評価損益（含み）</div>
+              <div class="pl-breakdown-value profit">+¥3,240,000</div>
+            </div>
+            <div class="pl-breakdown-item">
+              <div class="pl-breakdown-label">確定損益（今期）</div>
+              <div class="pl-breakdown-value profit">+¥850,000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ③ グラフ（インデックス比較切り替え付き） -->
+        <div class="chart-card" style="padding-bottom:0;">
+          <!-- インデックス比較切り替え -->
+          <div class="index-toggle" id="pl-index-toggle">
+            <button class="index-toggle-btn" onclick="setIndex('none', this)">比較なし</button>
+            <button class="index-toggle-btn" onclick="setIndex('topix', this)">TOPIX</button>
+            <button class="index-toggle-btn active" onclick="setIndex('sp500', this)">S&amp;P500</button>
+          </div>
+
+          <!-- バーチャート（週次：四半期モード） -->
+          <div style="position:relative;display:flex;align-items:stretch;padding:0 12px 4px;">
+            <div style="display:flex;flex-direction:column;justify-content:space-between;width:36px;padding-right:4px;text-align:right;padding-bottom:20px;flex-shrink:0;">
               <span style="font-size:8px;color:var(--muted);line-height:1;">+400万</span>
               <span style="font-size:8px;color:var(--muted);line-height:1;">0</span>
               <span style="font-size:8px;color:var(--muted);line-height:1;">-100万</span>
             </div>
             <div style="flex:1;overflow:hidden;">
-              <svg width="100%" height="115" viewBox="0 0 256 115" preserveAspectRatio="none">
-                <!-- Grid top -->
-                <line x1="0" y1="20" x2="256" y2="20" stroke="#F0EDE9" stroke-width="0.8"/>
-                <!-- Zero baseline -->
-                <line x1="0" y1="78" x2="256" y2="78" stroke="#C8C5C1" stroke-width="1.2"/>
-                <!-- Below-zero subtle tint -->
-                <rect x="0" y="78" width="256" height="27" fill="#D02F3F" opacity="0.04"/>
-
-                <!-- Profit bars (blue, above zero) -->
-                <rect x="1"   y="65" width="13" height="13" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk1 +90万 -->
-                <rect x="21"  y="58" width="13" height="20" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk2 +140万 -->
-                <!-- Loss: Week 3 -->
-                <rect x="41"  y="78" width="13" height="7"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk3 -45万 -->
-                <rect x="61"  y="55" width="13" height="23" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk4 +160万 -->
-                <rect x="80"  y="45" width="13" height="33" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk5 +230万 -->
-                <!-- Loss: Week 6 -->
-                <rect x="100" y="78" width="13" height="7"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk6 -50万 -->
-                <rect x="120" y="49" width="13" height="29" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk7 +200万 -->
-                <!-- Loss: Week 8 (tiny) -->
-                <rect x="139" y="78" width="13" height="4"  rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk8 -30万 -->
-                <rect x="159" y="38" width="13" height="40" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk9 +280万 -->
-                <rect x="179" y="41" width="13" height="37" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk10 +260万 -->
-                <!-- Loss: Week 11 -->
-                <rect x="198" y="78" width="13" height="13" rx="2" fill="#D02F3F" opacity="0.88"/><!-- Wk11 -90万 -->
-                <rect x="218" y="34" width="13" height="44" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk12 +310万 -->
-                <rect x="238" y="24" width="13" height="54" rx="2" fill="#316FEE" opacity="0.88"/><!-- Wk13 +380万 -->
-
-                <!-- S&P500 comparison dots (orange) -->
-                <circle cx="7"   cy="69" r="2.5" fill="#FCAD4C"/>
-                <circle cx="27"  cy="62" r="2.5" fill="#FCAD4C"/>
-                <circle cx="47"  cy="82" r="2.5" fill="#FCAD4C"/>
-                <circle cx="67"  cy="59" r="2.5" fill="#FCAD4C"/>
-                <circle cx="86"  cy="49" r="2.5" fill="#FCAD4C"/>
-                <circle cx="106" cy="82" r="2.5" fill="#FCAD4C"/>
-                <circle cx="126" cy="53" r="2.5" fill="#FCAD4C"/>
-                <circle cx="145" cy="80" r="2.5" fill="#FCAD4C"/>
-                <circle cx="165" cy="42" r="2.5" fill="#FCAD4C"/>
-                <circle cx="185" cy="45" r="2.5" fill="#FCAD4C"/>
-                <circle cx="204" cy="83" r="2.5" fill="#FCAD4C"/>
-                <circle cx="224" cy="38" r="2.5" fill="#FCAD4C"/>
-                <circle cx="244" cy="28" r="2.5" fill="#FCAD4C"/>
-
-                <!-- オルカン comparison dots (gray) -->
-                <circle cx="7"   cy="72" r="2" fill="#B6B2AF"/>
-                <circle cx="27"  cy="65" r="2" fill="#B6B2AF"/>
-                <circle cx="47"  cy="81" r="2" fill="#B6B2AF"/>
-                <circle cx="67"  cy="62" r="2" fill="#B6B2AF"/>
-                <circle cx="86"  cy="53" r="2" fill="#B6B2AF"/>
-                <circle cx="106" cy="81" r="2" fill="#B6B2AF"/>
-                <circle cx="126" cy="57" r="2" fill="#B6B2AF"/>
-                <circle cx="145" cy="79" r="2" fill="#B6B2AF"/>
-                <circle cx="165" cy="46" r="2" fill="#B6B2AF"/>
-                <circle cx="185" cy="49" r="2" fill="#B6B2AF"/>
-                <circle cx="204" cy="82" r="2" fill="#B6B2AF"/>
-                <circle cx="224" cy="42" r="2" fill="#B6B2AF"/>
-                <circle cx="244" cy="32" r="2" fill="#B6B2AF"/>
+              <svg width="100%" height="120" viewBox="0 0 256 120" preserveAspectRatio="none">
+                <!-- グリッド -->
+                <line x1="0" y1="18" x2="256" y2="18" stroke="#F0EDE9" stroke-width="0.8"/>
+                <line x1="0" y1="80" x2="256" y2="80" stroke="#C8C5C1" stroke-width="1.2"/>
+                <rect x="0" y="80" width="256" height="28" fill="#D02F3F" opacity="0.04"/>
+                <!-- 利益バー（青） -->
+                <rect x="2"   y="68" width="14" height="12" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="22"  y="60" width="14" height="20" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="42"  y="80" width="14" height="8"  rx="2" fill="#D02F3F" opacity="0.88"/>
+                <rect x="62"  y="56" width="14" height="24" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="82"  y="46" width="14" height="34" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="102" y="80" width="14" height="6"  rx="2" fill="#D02F3F" opacity="0.88"/>
+                <rect x="122" y="50" width="14" height="30" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="142" y="80" width="14" height="4"  rx="2" fill="#D02F3F" opacity="0.88"/>
+                <rect x="162" y="38" width="14" height="42" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="182" y="42" width="14" height="38" rx="2" fill="#316FEE" opacity="0.88"/>
+                <rect x="202" y="80" width="14" height="14" rx="2" fill="#D02F3F" opacity="0.88"/>
+                <rect x="222" y="32" width="14" height="48" rx="2" fill="#316FEE" opacity="0.88"/>
+                <!-- S&P500折れ線 -->
+                <polyline points="9,72 29,64 49,84 69,60 89,50 109,84 129,55 149,82 169,44 189,47 209,85 229,36" fill="none" stroke="#FCAD4C" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
               </svg>
-              <!-- X-axis labels -->
-              <div style="display:flex;justify-content:space-between;padding:2px 4px 0;font-size:9px;color:var(--muted);">
-                <span>1月</span><span>2月</span><span>3月</span><span>4月</span>
+              <!-- X軸ラベル -->
+              <div style="display:flex;justify-content:space-between;padding:2px 0 0;font-size:9px;color:var(--muted);">
+                <span>1月</span><span>2月</span><span>3月</span>
               </div>
             </div>
           </div>
-          <!-- Legend with dots -->
-          <div class="index-legend" style="margin-top:8px;">
-            <div class="legend-item">
-              <div style="width:8px;height:8px;border-radius:50%;background:#316FEE;margin-right:5px;flex-shrink:0;"></div>
-              <span>自分 <strong style="color:#316FEE">+17.8%</strong></span>
+
+          <!-- インデックス比較の凡例 -->
+          <div class="index-compare-row">
+            <div class="index-compare-item">
+              <div class="index-dot" style="background:#316FEE;"></div>
+              <span>自分 <strong style="color:var(--profit);">+17.8%</strong></span>
             </div>
-            <div class="legend-item">
-              <div style="width:7px;height:7px;border-radius:50%;background:#FCAD4C;margin-right:5px;flex-shrink:0;"></div>
+            <div class="index-compare-item">
+              <div class="index-dot" style="background:#FCAD4C;"></div>
               <span>S&amp;P500 <strong>+14.2%</strong></span>
             </div>
-            <div class="legend-item">
-              <div style="width:7px;height:7px;border-radius:50%;background:#B6B2AF;margin-right:5px;flex-shrink:0;"></div>
-              <span>オルカン <strong>+11.5%</strong></span>
+            <div class="index-compare-item" style="color:var(--profit);font-weight:700;font-size:11px;">
+              ＋3.6pt 上回る
             </div>
           </div>
         </div>
+
+        <!-- ④ KPI（2枚に削減） -->
         <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-label">評価損益</div>
-            <div class="kpi-value profit">+¥3,240,000</div>
-            <div class="kpi-sub">前日比 +¥68,000</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">実現損益（今年）</div>
-            <div class="kpi-value profit">+¥850,000</div>
-            <div class="kpi-sub">税引後 +¥637,500</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">年間配当（受取済）</div>
-            <div class="kpi-value">¥124,000</div>
-            <div class="kpi-sub">前年比 +¥18,000</div>
-          </div>
           <div class="kpi-card">
             <div class="kpi-label">年間リターン</div>
             <div class="kpi-value profit">+17.8%</div>
-            <div class="kpi-sub">vs S&amp;P500 +3.6pt</div>
+            <div class="kpi-sub" style="color:var(--profit);font-weight:600;">vs S&amp;P500 +3.6pt ↑</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">実現損益（税引後）</div>
+            <div class="kpi-value profit">+¥637,500</div>
+            <div class="kpi-sub">税引前 +¥850,000</div>
           </div>
         </div>
+
+        <!-- ⑤ 節税ヒント（現状維持） -->
         <div class="hint-card">
           <div class="hint-header">
             <span class="hint-icon">💡</span>
@@ -1483,19 +1830,37 @@
          ポートフォリオタブ
     ============================================================ -->
     <div class="tab-panel" id="panel-portfolio">
-      <div class="holdings-toolbar">
-        <span class="holdings-toolbar-label">7銘柄 ／ 評価損益順</span>
-        <span class="holdings-toolbar-action">並べ替え ›</span>
+      <div class="portfolio-controls">
+        <div class="portfolio-header">
+          <span class="portfolio-count" id="holdings-count">7銘柄</span>
+        </div>
+        <div class="sort-dropdown" id="sort-options">
+          <button class="sort-btn active" data-sort="pl-desc" onclick="setSortAndFilter('pl-desc', this)">評価損益順</button>
+          <button class="sort-btn" data-sort="type" onclick="setSortAndFilter('type', this)">銘柄種別</button>
+          <button class="sort-btn" data-sort="broker" onclick="setSortAndFilter('broker', this)">保有証券会社別</button>
+          <button class="sort-btn" data-sort="amount-desc" onclick="setSortAndFilter('amount-desc', this)">評価額順</button>
+          <button class="sort-btn" data-sort="pl-rate-desc" onclick="setSortAndFilter('pl-rate-desc', this)">損益率順</button>
+        </div>
+        <div class="filter-group" id="filter-options">
+          <label class="filter-checkbox-label">
+            <input type="checkbox" value="stock" checked onchange="setSortAndFilter()"> 株式
+          </label>
+          <label class="filter-checkbox-label">
+            <input type="checkbox" value="fund" checked onchange="setSortAndFilter()"> 投信
+          </label>
+          <label class="filter-checkbox-label">
+            <input type="checkbox" value="etf" checked onchange="setSortAndFilter()"> ETF
+          </label>
+          <label class="filter-checkbox-label">
+            <input type="checkbox" value="bond" checked onchange="setSortAndFilter()"> 債券
+          </label>
+        </div>
       </div>
-      <div class="holdings-list">
-        <div class="holding-item"><div class="holding-icon">VTI</div><div class="holding-info"><div class="holding-name">バンガード・トータル・マーケット</div><div class="holding-meta">VTI · 米国ETF</div></div><div class="holding-right"><div class="holding-amount">¥4,820,000</div><div class="holding-pl profit">+¥1,240,000（+34.6%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">NVDA</div><div class="holding-info"><div class="holding-name">エヌビディア</div><div class="holding-meta">NVDA · 米国株</div></div><div class="holding-right"><div class="holding-amount">¥860,000</div><div class="holding-pl profit">+¥410,000（+91.1%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">eMAXIS</div><div class="holding-info"><div class="holding-name">eMAXIS Slim 全世界株式</div><div class="holding-meta">オルカン · 投資信託</div></div><div class="holding-right"><div class="holding-amount">¥3,210,000</div><div class="holding-pl profit">+¥610,000（+23.5%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">VOO</div><div class="holding-info"><div class="holding-name">バンガード S&amp;P500 ETF</div><div class="holding-meta">VOO · 米国ETF</div></div><div class="holding-right"><div class="holding-amount">¥2,150,000</div><div class="holding-pl profit">+¥398,000（+22.7%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">7203</div><div class="holding-info"><div class="holding-name">トヨタ自動車</div><div class="holding-meta">7203 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥980,000</div><div class="holding-pl profit">+¥142,000（+16.9%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">8306</div><div class="holding-info"><div class="holding-name">三菱UFJフィナンシャル</div><div class="holding-meta">8306 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥620,000</div><div class="holding-pl loss">−¥210,000（−25.3%）</div></div></div>
-        <div class="holding-item"><div class="holding-icon">9831</div><div class="holding-info"><div class="holding-name">ヤマダホールディングス</div><div class="holding-meta">9831 · 東証プライム</div></div><div class="holding-right"><div class="holding-amount">¥280,000</div><div class="holding-pl loss">−¥120,000（−30.0%）</div></div></div>
+
+      <div class="holdings-container" id="holdings-container">
+        <!-- Holdings will be rendered here by JavaScript -->
       </div>
+
       <div class="news-section">
         <div class="news-section-title">保有銘柄の関連ニュース</div>
         <div class="news-item-card"><div class="news-item-tag">NVDA</div><div class="news-item-title">エヌビディア、データセンター向け売上が四半期で過去最高を更新</div><div class="news-item-meta">Bloomberg · 2時間前</div></div>
@@ -1569,9 +1934,25 @@
 
   <div class="anno-section">
     <div class="anno-section-title">推移 › 損益ビュー（ADV）</div>
+    <div class="anno-item new">
+      <span class="anno-tag new">変更</span>
+      <p><strong>合計損益をHero表示</strong><br>評価損益＋確定損益の合算を大きく表示。内訳を横並びカードで補完。</p>
+    </div>
+    <div class="anno-item new">
+      <span class="anno-tag new">変更</span>
+      <p><strong>期間セレクタ：粒度タブ＋矢印ナビ</strong><br>[月][四半期][年] で粒度を切り替え、矢印で前後移動。全期間は廃止。Hero・グラフ・KPIが全て連動。</p>
+    </div>
+    <div class="anno-item new">
+      <span class="anno-tag new">変更</span>
+      <p><strong>表示対象グループ選択</strong><br>全資産 / 投資性資産のみ / Myポートフォリオ別をドロップダウンで切り替え。「現金を除いてインデックス比較」が可能に。</p>
+    </div>
     <div class="anno-item adv">
       <span class="anno-tag adv">ADV</span>
-      <p><strong>インデックス比較グラフ</strong><br>S&P500・オルカンとの比較を重ねて表示。「人と違うことをやって好成績を取りたい」インサイトに直結。</p>
+      <p><strong>インデックス比較：切り替え式</strong><br>[比較なし][TOPIX][S&amp;P500] で比較対象を1つ選択。同時比較ではなく1対1比較に整理。</p>
+    </div>
+    <div class="anno-item new">
+      <span class="anno-tag new">変更</span>
+      <p><strong>KPIを2枚に削減</strong><br>年間リターン＋インデックス差分 / 実現損益（税引後）のみ。配当は配当タブに移管。</p>
     </div>
     <div class="anno-item adv">
       <span class="anno-tag adv">ADV</span>
@@ -1605,6 +1986,321 @@
 </div>
 
 <script>
+  // ===== 保有銘柄データ =====
+  const holdingsData = [
+    {
+      symbol: 'VTI',
+      name: 'バンガード・トータル・マーケット',
+      type: 'etf',
+      typeLabel: 'ETF',
+      broker: '米国',
+      meta: 'VTI · 米国ETF',
+      amount: 4820000,
+      pl: 1240000,
+      plRate: 34.6,
+      isProfit: true
+    },
+    {
+      symbol: 'NVDA',
+      name: 'エヌビディア',
+      type: 'stock',
+      typeLabel: '株式',
+      broker: '米国',
+      meta: 'NVDA · 米国株',
+      amount: 860000,
+      pl: 410000,
+      plRate: 91.1,
+      isProfit: true
+    },
+    {
+      symbol: 'eMAXIS',
+      name: 'eMAXIS Slim 全世界株式',
+      type: 'fund',
+      typeLabel: '投信',
+      broker: '日本',
+      meta: 'オルカン · 投資信託',
+      amount: 3210000,
+      pl: 610000,
+      plRate: 23.5,
+      isProfit: true
+    },
+    {
+      symbol: 'VOO',
+      name: 'バンガード S&P500 ETF',
+      type: 'etf',
+      typeLabel: 'ETF',
+      broker: '米国',
+      meta: 'VOO · 米国ETF',
+      amount: 2150000,
+      pl: 398000,
+      plRate: 22.7,
+      isProfit: true
+    },
+    {
+      symbol: '7203',
+      name: 'トヨタ自動車',
+      type: 'stock',
+      typeLabel: '株式',
+      broker: '日本',
+      meta: '7203 · 東証プライム',
+      amount: 980000,
+      pl: 142000,
+      plRate: 16.9,
+      isProfit: true
+    },
+    {
+      symbol: '8306',
+      name: '三菱UFJフィナンシャル',
+      type: 'stock',
+      typeLabel: '株式',
+      broker: '日本',
+      meta: '8306 · 東証プライム',
+      amount: 620000,
+      pl: -210000,
+      plRate: -25.3,
+      isProfit: false
+    },
+    {
+      symbol: '9831',
+      name: 'ヤマダホールディングス',
+      type: 'stock',
+      typeLabel: '株式',
+      broker: '日本',
+      meta: '9831 · 東証プライム',
+      amount: 280000,
+      pl: -120000,
+      plRate: -30.0,
+      isProfit: false
+    }
+  ];
+
+  let currentSort = 'pl-desc';
+  let currentFilters = { stock: true, fund: true, etf: true, bond: true };
+
+  function getGroupLabel(value) {
+    if (!value) return '';
+    const labels = {
+      'stock': '株式',
+      'fund': '投資信託',
+      'etf': 'ETF',
+      'bond': '債券',
+      '米国': '米国',
+      '日本': '日本'
+    };
+    return labels[value] || value;
+  }
+
+  function filterHoldings() {
+    return holdingsData.filter(h => {
+      const typeKey = h.type;
+      return currentFilters[typeKey] === true;
+    });
+  }
+
+  function sortHoldings(holdings) {
+    const sorted = [...holdings];
+    switch(currentSort) {
+      case 'pl-desc':
+        sorted.sort((a, b) => (b.pl - a.pl) || (b.plRate - a.plRate));
+        break;
+      case 'amount-desc':
+        sorted.sort((a, b) => b.amount - a.amount);
+        break;
+      case 'pl-rate-desc':
+        sorted.sort((a, b) => (b.plRate - a.plRate) || (b.pl - a.pl));
+        break;
+      case 'type':
+        sorted.sort((a, b) => {
+          const typeOrder = { 'stock': 0, 'etf': 1, 'fund': 2, 'bond': 3 };
+          return (typeOrder[a.type] - typeOrder[b.type]) || (b.pl - a.pl);
+        });
+        break;
+      case 'broker':
+        sorted.sort((a, b) => {
+          if (a.broker !== b.broker) return a.broker.localeCompare(b.broker, 'ja');
+          return b.pl - a.pl;
+        });
+        break;
+    }
+    return sorted;
+  }
+
+  function groupHoldings(holdings) {
+    // グループ化の判定：銘柄種別またはbroker系でソート指定時のみグループ化
+    if (currentSort === 'type') {
+      const grouped = {};
+      holdings.forEach(h => {
+        if (!grouped[h.type]) grouped[h.type] = [];
+        grouped[h.type].push(h);
+      });
+      return grouped;
+    } else if (currentSort === 'broker') {
+      const grouped = {};
+      holdings.forEach(h => {
+        if (!grouped[h.broker]) grouped[h.broker] = [];
+        grouped[h.broker].push(h);
+      });
+      return grouped;
+    } else {
+      // グループ化なし（フラットリスト）
+      return { '__flat': holdings };
+    }
+  }
+
+  function renderHoldings() {
+    const filtered = filterHoldings();
+    const sorted = sortHoldings(filtered);
+    const grouped = groupHoldings(sorted);
+
+    const container = document.getElementById('holdings-container');
+    container.innerHTML = '';
+
+    // 総数を更新
+    document.getElementById('holdings-count').textContent = filtered.length + '銘柄';
+
+    // フラットリストの場合
+    if (currentSort !== 'type' && currentSort !== 'broker') {
+      sorted.forEach(h => {
+        container.appendChild(createHoldingCard(h));
+      });
+    } else {
+      // グループ化表示
+      const groupOrder = currentSort === 'type'
+        ? ['stock', 'etf', 'fund', 'bond']
+        : sorted.map((_, i) => sorted[i].broker).filter((v, i, a) => a.indexOf(v) === i);
+
+      groupOrder.forEach(groupKey => {
+        if (!grouped[groupKey]) return;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'holdings-group';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'holdings-group-header';
+        headerDiv.textContent = getGroupLabel(groupKey);
+        groupDiv.appendChild(headerDiv);
+
+        grouped[groupKey].forEach(h => {
+          groupDiv.appendChild(createHoldingCard(h));
+        });
+
+        container.appendChild(groupDiv);
+      });
+    }
+  }
+
+  function createHoldingCard(holding) {
+    const card = document.createElement('div');
+    card.className = 'holding-card';
+
+    const plClass = holding.isProfit ? 'profit' : 'loss';
+    const plSign = holding.isProfit ? '+' : '−';
+    const plText = `${plSign}¥${Math.abs(holding.pl).toLocaleString('ja-JP')}（${plSign}${Math.abs(holding.plRate).toFixed(1)}%）`;
+
+    card.innerHTML = `
+      <div class="holding-card-icon">${holding.symbol}</div>
+      <div class="holding-card-body">
+        <div class="holding-card-name">${holding.name}</div>
+        <div class="holding-card-meta">${holding.meta}</div>
+      </div>
+      <div class="holding-card-right">
+        <div class="holding-card-amount">¥${holding.amount.toLocaleString('ja-JP')}</div>
+        <div class="holding-card-pl ${plClass}">${plText}</div>
+      </div>
+    `;
+    return card;
+  }
+
+  function setSortAndFilter(sortMode = null, btnEl = null) {
+    if (sortMode !== null) {
+      currentSort = sortMode;
+      // ソートボタンのアクティブ状態を更新
+      document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+    }
+
+    // フィルター状態を更新
+    currentFilters = {};
+    document.querySelectorAll('.filter-checkbox-label input[type="checkbox"]').forEach(checkbox => {
+      currentFilters[checkbox.value] = checkbox.checked;
+    });
+
+    renderHoldings();
+  }
+
+  // ===== 損益ビュー：期間管理 =====
+  const plPeriodState = {
+    granularity: 'quarter',  // 'month' | 'quarter' | 'year'
+    year: 2026,
+    quarter: 1,
+    month: 4
+  };
+
+  const granularityLabels = {
+    month: (s) => `${s.year}年${s.month}月`,
+    quarter: (s) => `${s.year} Q${s.quarter}`,
+    year: (s) => `${s.year}年`
+  };
+
+  const granularityPeriodLabels = {
+    month: (s) => `${s.year}年${s.month}月（日次）`,
+    quarter: (s) => {
+      const starts = [1,4,7,10];
+      const ends = [3,6,9,12];
+      const q = s.quarter - 1;
+      return `${s.year}年${starts[q]}月〜${ends[q]}月（四半期）`;
+    },
+    year: (s) => `${s.year}年（年次）`
+  };
+
+  function updatePlPeriodUI() {
+    const s = plPeriodState;
+    const nav = document.getElementById('pl-period-label');
+    const hero = document.getElementById('pl-hero-period');
+    if (nav) nav.textContent = granularityLabels[s.granularity](s);
+    if (hero) hero.textContent = granularityPeriodLabels[s.granularity](s);
+  }
+
+  function setGranularity(mode, btnEl) {
+    plPeriodState.granularity = mode;
+    document.querySelectorAll('.granularity-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    updatePlPeriodUI();
+  }
+
+  function shiftPeriod(dir) {
+    const s = plPeriodState;
+    if (s.granularity === 'month') {
+      s.month += dir;
+      if (s.month > 12) { s.month = 1; s.year++; }
+      if (s.month < 1)  { s.month = 12; s.year--; }
+    } else if (s.granularity === 'quarter') {
+      s.quarter += dir;
+      if (s.quarter > 4) { s.quarter = 1; s.year++; }
+      if (s.quarter < 1) { s.quarter = 4; s.year--; }
+    } else {
+      s.year += dir;
+    }
+    updatePlPeriodUI();
+  }
+
+  function setIndex(mode, btnEl) {
+    document.querySelectorAll('.index-toggle-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+  }
+
+  function setPlGroup(value) {
+    // 将来の実装: グループに応じて数値を切り替える
+    console.log('group changed:', value);
+  }
+
+  // 初期レンダリング
+  window.addEventListener('load', function() {
+    renderHoldings();
+    loadInvestmentSettings();
+    updatePlPeriodUI();
+  });
+
   function switchSubTab(panelId, tabEl) {
     document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
